@@ -16,13 +16,13 @@
 
 多张图片排版时，裁切线遇到相邻图片会自动中断避让，不覆盖图片内容：
 
-![裁切线自动避让](screenshots/crop-mark-avoidance.png)
+![裁切线自动避让](screenshots/crop-mark-avoidance.gif)
 
 ### PDF导出效果
 
 导出的PDF包含所有图片和裁切线，可直接用于打印：
 
-![PDF导出效果](screenshots/pdf-export-result.png)
+![PDF导出效果](screenshots/pdf-export-result.jpg)
 
 ## 功能概览
 
