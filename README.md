@@ -4,25 +4,25 @@
 
 **在线体验：** https://elsiehu.github.io/print-layout-tool/
 
-## 界面预览
+## 功能展示
 
-### 主界面
+### 正反面联动
 
-工具栏、双面画布、右侧控制面板一览：
+正面上传图片后，背面自动生成镜像位置的容器，支持长边翻页（水平镜像）和短边翻页（垂直镜像）：
 
-![主界面](screenshots/main-interface.png)
+![正反面联动](screenshots/front-back-linkage.png)
 
-### 上传图片
+### 裁切线自动避让
 
-上传图片后自动生成裁切线，正反面联动排版：
+多张图片排版时，裁切线遇到相邻图片会自动中断避让，不覆盖图片内容：
 
-![上传图片](screenshots/with-images.png)
+![裁切线自动避让](screenshots/crop-mark-avoidance.png)
 
-### 选中编辑
+### PDF导出效果
 
-选中图片后显示控制手柄，右侧面板可精确调整位置和尺寸：
+导出的PDF包含所有图片和裁切线，可直接用于打印：
 
-![选中编辑](screenshots/selected-state.png)
+![PDF导出效果](screenshots/pdf-export-result.png)
 
 ## 功能概览
 

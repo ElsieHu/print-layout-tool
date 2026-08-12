@@ -2,6 +2,11 @@
 screenshots/bug_*
 screenshots/step*
 screenshots/test*
+screenshots/main-interface.png
+screenshots/with-images.png
+screenshots/selected-state.png
+screenshots/crop-marks-zoomed.png
+test-image.jpg
 .trae-html-share-packages/
 *.zip
 *.pdf
