@@ -14,7 +14,7 @@
 
 ### 裁切线自动避让
 
-多张图片排版时，裁切线遇到相邻图片会自动中断避让，不覆盖图片内容：
+多张图片排版时，裁切线遇到相邻图片会自动中断避让，同时支持重叠检测和超出画布提示：
 
 ![裁切线自动避让](screenshots/crop-mark-avoidance.gif)
 
@@ -22,7 +22,7 @@
 
 导出的PDF包含所有图片和裁切线，可直接用于打印：
 
-![PDF导出效果](screenshots/pdf-export-result.jpg)
+![PDF导出效果](screenshots/pdf-export-result.png)
 
 ## 功能概览
 
