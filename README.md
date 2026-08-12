@@ -4,6 +4,26 @@
 
 **在线体验：** https://elsiehu.github.io/print-layout-tool/
 
+## 界面预览
+
+### 主界面
+
+工具栏、双面画布、右侧控制面板一览：
+
+![主界面](screenshots/main-interface.png)
+
+### 上传图片
+
+上传图片后自动生成裁切线，正反面联动排版：
+
+![上传图片](screenshots/with-images.png)
+
+### 选中编辑
+
+选中图片后显示控制手柄，右侧面板可精确调整位置和尺寸：
+
+![选中编辑](screenshots/selected-state.png)
+
 ## 功能概览
 
 - **图片上传**：支持点击上传或拖拽图片到画布

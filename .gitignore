@@ -1,4 +1,7 @@
-screenshots/
+# 忽略测试截图，仅保留 README 展示用截图
+screenshots/bug_*
+screenshots/step*
+screenshots/test*
 .trae-html-share-packages/
 *.zip
 *.pdf
