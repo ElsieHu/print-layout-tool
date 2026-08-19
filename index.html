@@ -4932,8 +4932,8 @@
       <button class="toolbar-btn icon-btn" id="redoBtn" title="重做 (Ctrl+Shift+Z)" disabled="">↪ 重做</button>
     </div>
     <div class="toolbar-group toolbar-group-noborder">
-      <button class="toolbar-btn" id="printBtn">🖨 打印</button>
-      <button class="toolbar-btn primary" id="exportPdf">&nbsp;导出</button>
+      <button class="toolbar-btn" id="printBtn">打印</button>
+      <button class="toolbar-btn primary" id="exportPdf">导出</button>
     </div>
   </div>
 
@@ -6442,11 +6442,24 @@ function syncLinkedItem(item, side) {
 
 function computeBackPosition(frontItem) {
   const paper = getPaperDimensions();
-  if (STATE.flipMode === 'long') {
+  const longEdgeIsVertical = STATE.orientation !== 'landscape';
+  const doHorizontalMirror = (STATE.flipMode === 'long') === longEdgeIsVertical;
+  if (doHorizontalMirror) {
     return { x: paper.w - frontItem.x - frontItem.w, y: frontItem.y };
   } else {
     return { x: frontItem.x, y: paper.h - frontItem.y - frontItem.h };
   }
+}
+
+function updateFlipIndicator() {
+  const indicator = $('#flipIndicator');
+  if (!indicator) return;
+  const isLong = STATE.flipMode === 'long';
+  const longEdgeIsVertical = STATE.orientation !== 'landscape';
+  const showHorizontal = isLong === longEdgeIsVertical;
+  const arrow = showHorizontal ? '↔' : '↕';
+  const label = isLong ? '长边翻页' : '短边翻页';
+  indicator.textContent = `${arrow} ${label}`;
 }
 
 function recomputeAllBackPositions() {
@@ -6466,6 +6479,81 @@ function recomputeAllBackPositions() {
 }
 
 // ==================== 上传图片 ====================
+function getImageDPI(buffer) {
+  const view = new DataView(buffer);
+  if (buffer.byteLength < 4) return null;
+  // JPEG: 0xFF 0xD8
+  if (view.getUint8(0) === 0xFF && view.getUint8(1) === 0xD8) {
+    return getJPEGDPI(view, buffer);
+  }
+  // PNG: 137 80 78 71 13 10 26 10
+  if (view.getUint8(0) === 137 && view.getUint8(1) === 80 && view.getUint8(2) === 78 && view.getUint8(3) === 71) {
+    return getPNGDPI(view, buffer);
+  }
+  return null;
+}
+
+function getJPEGDPI(view, buffer) {
+  let offset = 2;
+  while (offset + 3 < buffer.byteLength) {
+    if (view.getUint8(offset) !== 0xFF) { offset++; continue; }
+    const marker = view.getUint8(offset + 1);
+    offset += 2;
+    if ((marker >= 0xD0 && marker <= 0xD9) || marker === 0x01) continue;
+    if (marker === 0xDA) break;
+    const length = view.getUint16(offset);
+    if (marker === 0xE1 && offset + 8 < buffer.byteLength &&
+        view.getUint8(offset + 2) === 0x45 && view.getUint8(offset + 3) === 0x78 &&
+        view.getUint8(offset + 4) === 0x69 && view.getUint8(offset + 5) === 0x66 &&
+        view.getUint8(offset + 6) === 0x00 && view.getUint8(offset + 7) === 0x00) {
+      const tiffStart = offset + 8;
+      const byteOrder = view.getUint16(tiffStart);
+      const le = byteOrder === 0x4949;
+      if (view.getUint16(tiffStart + 2, le) !== 0x002A) return null;
+      const ifdOffset = view.getUint32(tiffStart + 4, le);
+      const entriesStart = tiffStart + ifdOffset;
+      const numEntries = view.getUint16(entriesStart, le);
+      let xRes = null, yRes = null, unit = 2;
+      for (let i = 0; i < numEntries; i++) {
+        const e = entriesStart + 2 + i * 12;
+        const tag = view.getUint16(e, le);
+        if (tag === 0x011A) {
+          const vo = view.getUint32(e + 8, le);
+          xRes = view.getUint32(tiffStart + vo, le) / view.getUint32(tiffStart + vo + 4, le);
+        } else if (tag === 0x011B) {
+          const vo = view.getUint32(e + 8, le);
+          yRes = view.getUint32(tiffStart + vo, le) / view.getUint32(tiffStart + vo + 4, le);
+        } else if (tag === 0x0128) {
+          unit = view.getUint16(e + 8, le);
+        }
+      }
+      if (xRes && yRes) {
+        if (unit === 3) return { x: xRes * 2.54, y: yRes * 2.54 };
+        return { x: xRes, y: yRes };
+      }
+    }
+    offset += length;
+  }
+  return null;
+}
+
+function getPNGDPI(view, buffer) {
+  let offset = 8;
+  while (offset + 17 < buffer.byteLength) {
+    const length = view.getUint32(offset);
+    const type = String.fromCharCode(view.getUint8(offset + 4), view.getUint8(offset + 5), view.getUint8(offset + 6), view.getUint8(offset + 7));
+    if (type === 'pHYs') {
+      const xPPU = view.getUint32(offset + 8);
+      const yPPU = view.getUint32(offset + 12);
+      const unit = view.getUint8(offset + 16);
+      if (unit === 1) return { x: xPPU * 0.0254, y: yPPU * 0.0254 };
+      return null;
+    }
+    offset += 12 + length;
+  }
+  return null;
+}
+
 function handleFileUpload(files, side) {
   const fileArr = [...files].filter(f => f.type.startsWith('image/'));
   let loadIndex = 0;
@@ -6473,14 +6561,20 @@ function handleFileUpload(files, side) {
     const reader = new FileReader();
     reader.onload = (e) => {
       const img = new Image();
-      img.onload = () => {
+      img.onload = async () => {
         const paper = getPaperDimensions();
         const m = getMargin();
-        const maxW = (paper.w - 2 * m) * 0.5;
-        const maxH = (paper.h - 2 * m) * 0.5;
-        let w = img.naturalWidth;
-        let h = img.naturalHeight;
+        let dpi = { x: 300, y: 300 };
+        try {
+          const buffer = await file.arrayBuffer();
+          const parsed = getImageDPI(buffer);
+          if (parsed) dpi = parsed;
+        } catch(err) {}
+        let w = img.naturalWidth / dpi.x * 25.4;
+        let h = img.naturalHeight / dpi.y * 25.4;
         const ratio = w / h;
+        const maxW = paper.w - 2 * m;
+        const maxH = paper.h - 2 * m;
         if (w > maxW || h > maxH) {
           if (ratio > maxW / maxH) {
             w = maxW;
@@ -6960,6 +7054,10 @@ function printPage() {
 
   saveCurrentPageState();
 
+  const hasDoubleSided = STATE.pages.some(page =>
+    page.items.front.some(it => it.image) && page.items.back.some(it => it.image)
+  );
+
   let pagesHtml = '';
   for (let pageIdx = 0; pageIdx < STATE.pages.length; pageIdx++) {
     const pageItems = STATE.pages[pageIdx].items;
@@ -6969,7 +7067,8 @@ function printPage() {
     ];
 
     for (const s of sides) {
-      if (!s.items.some(it => it.image)) continue;
+      const hasImages = s.items.some(it => it.image);
+      if (!hasImages && !hasDoubleSided) continue;
       const showCrop = s.side === 'front' ? STATE.showCropMarksFront : STATE.showCropMarksBack;
       let itemsHtml = '';
       for (const item of s.items) {
@@ -6980,7 +7079,7 @@ function printPage() {
           <img src="${item.image}" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(${rotation}deg);width:100%;height:100%;object-fit:cover;"/>
         </div>`;
       }
-      if (showCrop) {
+      if (showCrop && hasImages) {
         for (const item of s.items) {
           itemsHtml += cropMarksHtml(item, s.items);
         }
@@ -7043,7 +7142,9 @@ async function exportPDF() {
 
   const paper = getPaperDimensions();
   const orientation = STATE.orientation === 'portrait' ? 'p' : 'l';
-  const format = STATE.paperSize.toLowerCase();
+  const format = STATE.paperSize === 'custom'
+    ? [paper.w, paper.h]
+    : STATE.paperSize.toLowerCase();
 
   const { jsPDF } = window.jspdf;
   const pdf = new jsPDF({ orientation, unit: 'mm', format });
@@ -7115,25 +7216,53 @@ async function exportPDF() {
     pdf.setLineDashPattern([], 0);
   }
 
-  function drawSide(pdf, side, items) {
+  async function drawSide(pdf, side, items) {
     for (const item of items) {
       if (!item.image) continue;
+      const ix = Number(item.x) || 0;
+      const iy = Number(item.y) || 0;
+      const iw = Number(item.w) || 0;
+      const ih = Number(item.h) || 0;
+      if (iw <= 0 || ih <= 0 || !isFinite(iw) || !isFinite(ih)) continue;
+      let format = 'PNG';
+      if (item.image.startsWith('data:image/jpeg') || item.image.startsWith('data:image/jpg')) format = 'JPEG';
+      else if (item.image.startsWith('data:image/webp')) format = 'WEBP';
+      const rotation = Number(item.rotation) || 0;
       try {
-        let format = 'PNG';
-        if (item.image.startsWith('data:image/jpeg')) format = 'JPEG';
-        else if (item.image.startsWith('data:image/png')) format = 'PNG';
-        const rotation = item.rotation || 0;
         if (rotation === 90 || rotation === 270) {
-          const px = item.x + (item.w - item.h) / 2;
-          const py = item.y + (item.h - item.w) / 2;
-          pdf.addImage(item.image, format, px, py, item.h, item.w, null, null, rotation);
+          const px = ix + (iw - ih) / 2;
+          const py = iy + (ih - iw) / 2;
+          pdf.addImage(item.image, format, px, py, ih, iw, null, null, rotation);
         } else if (rotation === 180) {
-          pdf.addImage(item.image, format, item.x, item.y, item.w, item.h, null, null, 180);
+          pdf.addImage(item.image, format, ix, iy, iw, ih, null, null, 180);
         } else {
-          pdf.addImage(item.image, format, item.x, item.y, item.w, item.h);
+          pdf.addImage(item.image, format, ix, iy, iw, ih);
         }
       } catch (err) {
-        console.error('图片添加失败:', err);
+        console.error('图片添加失败，尝试Canvas转换:', err);
+        try {
+          const img = await new Promise((resolve, reject) => {
+            const i = new Image();
+            i.onload = () => resolve(i);
+            i.onerror = reject;
+            i.src = item.image;
+          });
+          const canvas = document.createElement('canvas');
+          canvas.width = img.naturalWidth || 100;
+          canvas.height = img.naturalHeight || 100;
+          canvas.getContext('2d').drawImage(img, 0, 0);
+          if (rotation === 90 || rotation === 270) {
+            const px = ix + (iw - ih) / 2;
+            const py = iy + (ih - iw) / 2;
+            pdf.addImage(canvas, 'PNG', px, py, ih, iw, null, null, rotation);
+          } else if (rotation === 180) {
+            pdf.addImage(canvas, 'PNG', ix, iy, iw, ih, null, null, 180);
+          } else {
+            pdf.addImage(canvas, 'PNG', ix, iy, iw, ih);
+          }
+        } catch(err2) {
+          console.error('Canvas转换也失败:', err2, { ix, iy, iw, ih, rotation, format });
+        }
       }
     }
     drawCropMarksForSide(pdf, side, items);
@@ -7141,20 +7270,31 @@ async function exportPDF() {
 
   saveCurrentPageState();
 
+  const hasDoubleSided = STATE.pages.some(page =>
+    page.items.front.some(it => it.image) && page.items.back.some(it => it.image)
+  );
+
   let hasAnyContent = false;
   for (const page of STATE.pages) {
     const frontHasImages = page.items.front.some(it => it.image);
     const backHasImages = page.items.back.some(it => it.image);
     if (!frontHasImages && !backHasImages) continue;
-    if (hasAnyContent) pdf.addPage();
-    if (frontHasImages) {
-      drawSide(pdf, 'front', page.items.front);
+
+    if (frontHasImages || hasDoubleSided) {
+      if (hasAnyContent) pdf.addPage();
+      if (frontHasImages) {
+        await drawSide(pdf, 'front', page.items.front);
+      }
+      hasAnyContent = true;
     }
-    if (backHasImages) {
-      if (frontHasImages) pdf.addPage();
-      drawSide(pdf, 'back', page.items.back);
+
+    if (backHasImages || hasDoubleSided) {
+      if (hasAnyContent) pdf.addPage();
+      if (backHasImages) {
+        await drawSide(pdf, 'back', page.items.back);
+      }
+      hasAnyContent = true;
     }
-    hasAnyContent = true;
   }
 
   if (!hasAnyContent) {
@@ -7162,7 +7302,12 @@ async function exportPDF() {
     return;
   }
 
-  pdf.save('print-layout.pdf');
+  const today = new Date();
+  const dateStr = today.getFullYear().toString() + String(today.getMonth() + 1).padStart(2, '0') + String(today.getDate()).padStart(2, '0');
+  const fileName = STATE.paperSize === 'custom'
+    ? `CutAlong_${dateStr}`
+    : `CutAlong_${STATE.paperSize.toUpperCase()}_${dateStr}`;
+  pdf.save(fileName);
   showToast('PDF已导出！', 'success');
 }
 
@@ -7219,18 +7364,21 @@ function initEvents() {
     $('#customUnit').style.display = isCustom ? '' : 'none';
     updateCanvasSize();
     recomputeAllBackPositions();
+    if (STATE.pages.length > 1) showToast('纸张大小已修改，所有页面已同步更新', '');
   });
 
   $('#customW').addEventListener('change', (e) => {
     STATE.customW = Math.max(10, parseFloat(e.target.value) || 210);
     updateCanvasSize();
     recomputeAllBackPositions();
+    if (STATE.pages.length > 1) showToast('纸张宽度已修改，所有页面已同步更新', '');
   });
 
   $('#customH').addEventListener('change', (e) => {
     STATE.customH = Math.max(10, parseFloat(e.target.value) || 297);
     updateCanvasSize();
     recomputeAllBackPositions();
+    if (STATE.pages.length > 1) showToast('纸张高度已修改，所有页面已同步更新', '');
   });
 
   $$('.orientation-btn').forEach(btn => {
@@ -7240,7 +7388,9 @@ function initEvents() {
       STATE.orientation = btn.dataset.orientation;
       updateCanvasSize();
       recomputeAllBackPositions();
+      updateFlipIndicator();
       saveHistory();
+      if (STATE.pages.length > 1) showToast('页面方向已切换，所有页面已同步更新', '');
     });
   });
 
@@ -7249,10 +7399,10 @@ function initEvents() {
       $$('.flip-mode-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       STATE.flipMode = btn.dataset.flip;
-      const indicator = $('#flipIndicator');
-      if (indicator) indicator.textContent = STATE.flipMode === 'long' ? '↔ 长边翻页' : '↕ 短边翻页';
+      updateFlipIndicator();
       recomputeAllBackPositions();
       saveHistory();
+      if (STATE.pages.length > 1) showToast('翻页方向已切换，所有页面已同步更新', '');
     });
   });
 
