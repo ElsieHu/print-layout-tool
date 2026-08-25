@@ -155,7 +155,10 @@
     height: 32px;
     width: auto;
     display: block;
+    margin-top: 2px;
   }
+  [data-theme="light"] .toolbar-logo-img { content: url('title-light.png'); }
+  [data-theme="dark"] .toolbar-logo-img { content: url('title-dark.png'); }
 
 
   .toolbar-group-noborder {
@@ -530,7 +533,7 @@
     border-radius: 5px;
     border: 1px solid var(--border-strong);
     background: var(--surface);
-    color: var(--text-muted);
+    color: var(--accent);
     cursor: pointer;
     display: inline-flex;
     align-items: center;
