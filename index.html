@@ -971,6 +971,17 @@
   }
 
   .clear-row { display: flex; gap: 6px; }
+
+  .panel-row-btns {
+    display: flex;
+    gap: 6px;
+  }
+  .panel-row-btns .panel-btn {
+    flex: 1;
+    font-size: 11px;
+    padding: 6px;
+    margin-bottom: 0;
+  }
   .clear-row .panel-btn { flex: 1; margin-bottom: 0; padding: 7px; font-size: 12px; }
 
   /* ── Upload zone ── */
@@ -5251,9 +5262,9 @@
         </div>
       </div>
 
-      <div style="display:flex;gap:6px;">
-        <button class="panel-btn" id="replaceItem" style="flex:1;font-size:11px;padding:6px;">替换</button>
-        <button class="panel-btn danger" id="deleteItem" style="flex:1;font-size:11px;padding:6px;">删除</button>
+      <div class="panel-row-btns">
+        <button class="panel-btn" id="replaceItem">替换</button>
+        <button class="panel-btn danger" id="deleteItem">删除</button>
       </div>
     </div>
 
@@ -5291,8 +5302,8 @@
         <button class="align-btn" id="alignBottom" title="底部对齐">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="20" x2="21" y2="20"></line><rect x="6" y="8" width="5" height="10"></rect><rect x="13" y="11" width="5" height="7"></rect></svg></button>
       </div>
-      <div style="display:flex;gap:4px;">
-        <button class="panel-btn" id="distributeH" style="flex:1;padding:5px;" title="水平等距分布">
+      <div class="panel-row-btns">
+        <button class="panel-btn" id="distributeH" title="水平等距分布">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:18px;height:18px;display:block;margin:0 auto;">
             <line x1="4" y1="4" x2="4" y2="20"></line>
             <line x1="20" y1="4" x2="20" y2="20"></line>
@@ -5300,7 +5311,7 @@
             <rect x="13" y="9" width="3" height="6"></rect>
           </svg>
         </button>
-        <button class="panel-btn" id="distributeV" style="flex:1;padding:5px;" title="垂直等距分布">
+        <button class="panel-btn" id="distributeV" title="垂直等距分布">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:18px;height:18px;display:block;margin:0 auto;">
             <line x1="4" y1="4" x2="20" y2="4"></line>
             <line x1="4" y1="20" x2="20" y2="20"></line>
