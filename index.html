@@ -496,6 +496,51 @@
     min-width: 0;
   }
 
+  .workspace-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-width: 0;
+  }
+
+  .ruler-h {
+    height: 20px;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ruler-h-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    will-change: transform;
+  }
+
+  .workspace-content {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+    min-width: 0;
+  }
+
+  .ruler-v {
+    width: 20px;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ruler-v-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    will-change: transform;
+  }
+
   .workspace {
     flex: 1;
     display: flex;
@@ -546,51 +591,16 @@
   .side-icon-btn:hover { background: var(--surface-hover); border-color: var(--border-active); color: var(--text); }
   .side-icon-btn.danger:hover { background: var(--danger); border-color: var(--danger); color: #fff; }
 
-  .ruler-container {
-    position: relative;
-    padding-top: 24px;
-    padding-left: 24px;
-    border-radius: 2px;
-  }
-
-  .ruler-corner { display: none; }
-
-  .ruler-h {
-    position: absolute;
-    top: 0;
-    left: 24px;
-    right: 0;
-    height: 20px;
-    background: var(--surface-solid);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    overflow: hidden;
-    box-shadow: 0 1px 5px rgba(0,0,0,0.12);
-  }
-
-  .ruler-v {
-    position: absolute;
-    left: 0;
-    top: 24px;
-    bottom: 0;
-    width: 20px;
-    background: var(--surface-solid);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    overflow: hidden;
-    box-shadow: 1px 0 5px rgba(0,0,0,0.12);
-  }
-
-  .ruler-tick { position: absolute; top: 0; width: 1px; background: var(--text-muted); }
+  .ruler-tick { position: absolute; bottom: 0; width: 1px; background: var(--text-muted); }
   .ruler-tick.major { height: 10px; }
   .ruler-tick.minor { height: 4px; opacity: 0.45; }
 
-  .ruler-tick-v { position: absolute; left: 0; height: 1px; background: var(--text-muted); }
+  .ruler-tick-v { position: absolute; right: 0; height: 1px; background: var(--text-muted); }
   .ruler-tick-v.major { width: 10px; }
   .ruler-tick-v.minor { width: 4px; opacity: 0.45; }
 
   .ruler-label {
-    position: absolute; bottom: 0;
+    position: absolute; top: 2px;
     font-size: 9px; color: var(--text-muted);
     transform: translateX(-50%);
     font-family: -apple-system, 'SF Mono', 'Cascadia Code', monospace;
@@ -598,7 +608,7 @@
   }
 
   .ruler-label-v {
-    position: absolute; right: 0;
+    position: absolute; left: 2px;
     font-size: 9px; color: var(--text-muted);
     transform: translateY(-50%);
     font-family: -apple-system, 'SF Mono', 'Cascadia Code', monospace;
@@ -609,6 +619,7 @@
     position: relative;
     background: var(--canvas-bg);
     overflow: hidden;
+    box-shadow: var(--shadow);
   }
 
   .canvas.drag-over {
@@ -5136,7 +5147,11 @@
 <div class="page-tabs" id="pageTabs"></div>
 
 <div class="main-area">
-  <div class="workspace" id="workspace">
+  <div class="workspace-wrapper">
+    <div class="ruler-h" id="rulerH"><div class="ruler-h-inner" id="rulerHInner"></div></div>
+    <div class="workspace-content">
+      <div class="ruler-v" id="rulerV"><div class="ruler-v-inner" id="rulerVInner"></div></div>
+      <div class="workspace" id="workspace">
     <div class="side-panel">
       <div style="display:flex;align-items:center;gap:6px;width:100%;justify-content:center;">
         <div class="side-label front">&nbsp;正面</div>
@@ -5147,15 +5162,8 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
         </button>
       </div>
-      <div class="ruler-container">
-        <div class="ruler-corner"></div>
-        <div class="ruler-h" id="rulerHFront"></div>
-        <div class="ruler-v" id="rulerVFront"></div>
         <div class="canvas" id="canvasFront" data-side="front"></div>
-      </div>
     </div>
-
-    
 
     <div class="flip-indicator" id="flipIndicator" style="display:none;"></div>
 
@@ -5169,11 +5177,8 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
         </button>
       </div>
-      <div class="ruler-container">
-        <div class="ruler-corner"></div>
-        <div class="ruler-h" id="rulerHBack"></div>
-        <div class="ruler-v" id="rulerVBack"></div>
         <div class="canvas" id="canvasBack" data-side="back"></div>
+    </div>
       </div>
     </div>
   </div>
@@ -5533,8 +5538,8 @@ function updateCanvasSize() {
     canvas.style.height = hPx + 'px';
     updateCanvasGrid(canvas);
     renderMargin(canvas, side);
-    renderRuler(side);
   }
+  renderRuler();
 
   for (const side of ['front', 'back']) {
     for (const item of STATE.items[side]) {
@@ -5594,50 +5599,66 @@ function renderMargin(canvas, side) {
   canvas.appendChild(box);
 }
 
-function renderRuler(side) {
-  const rulerH = $(`#rulerH${side === 'front' ? 'Front' : 'Back'}`);
-  const rulerV = $(`#rulerV${side === 'front' ? 'Front' : 'Back'}`);
-  if (!rulerH || !rulerV) return;
+function renderRuler() {
+  const rulerHInner = $('#rulerHInner');
+  const rulerVInner = $('#rulerVInner');
+  if (!rulerHInner || !rulerVInner) return;
 
-  rulerH.innerHTML = '';
-  rulerV.innerHTML = '';
+  rulerHInner.innerHTML = '';
+  rulerVInner.innerHTML = '';
 
   if (!STATE.showRuler) return;
 
   const paper = getPaperDimensions();
   const config = getGridConfig();
+  const workspace = $('#workspace');
+  const rulerHRect = $('#rulerH').getBoundingClientRect();
+  const rulerVRect = $('#rulerV').getBoundingClientRect();
 
-  for (let i = 0; i <= paper.w; i += config.minor) {
-    const tick = document.createElement('div');
-    const isMajor = i % config.major === 0;
-    tick.className = 'ruler-tick ' + (isMajor ? 'major' : 'minor');
-    tick.style.left = mmToPx(i) + 'px';
-    rulerH.appendChild(tick);
+  for (const side of ['front', 'back']) {
+    const canvas = $(`#canvas${side === 'front' ? 'Front' : 'Back'}`);
+    const cRect = canvas.getBoundingClientRect();
+    const offset = cRect.left - rulerHRect.left + workspace.scrollLeft;
 
-    if (i % config.labelInterval === 0) {
-      const label = document.createElement('div');
-      label.className = 'ruler-label';
-      label.style.left = mmToPx(i) + 'px';
-      label.textContent = i;
-      rulerH.appendChild(label);
+    for (let i = 0; i <= paper.w; i += config.minor) {
+      const tick = document.createElement('div');
+      const isMajor = i % config.major === 0;
+      tick.className = 'ruler-tick ' + (isMajor ? 'major' : 'minor');
+      tick.style.left = (offset + mmToPx(i)) + 'px';
+      rulerHInner.appendChild(tick);
+
+      if (i % config.labelInterval === 0) {
+        const label = document.createElement('div');
+        label.className = 'ruler-label';
+        label.style.left = (offset + mmToPx(i)) + 'px';
+        label.textContent = i;
+        rulerHInner.appendChild(label);
+      }
     }
   }
+
+  const canvas = $('#canvasFront');
+  const cRect = canvas.getBoundingClientRect();
+  const offsetV = cRect.top - rulerVRect.top + workspace.scrollTop;
 
   for (let i = 0; i <= paper.h; i += config.minor) {
     const tick = document.createElement('div');
     const isMajor = i % config.major === 0;
     tick.className = 'ruler-tick-v ' + (isMajor ? 'major' : 'minor');
-    tick.style.top = mmToPx(i) + 'px';
-    rulerV.appendChild(tick);
+    tick.style.top = (offsetV + mmToPx(i)) + 'px';
+    rulerVInner.appendChild(tick);
 
     if (i % config.labelInterval === 0) {
       const label = document.createElement('div');
       label.className = 'ruler-label-v';
-      label.style.top = mmToPx(i) + 'px';
+      label.style.top = (offsetV + mmToPx(i)) + 'px';
       label.textContent = i;
-      rulerV.appendChild(label);
+      rulerVInner.appendChild(label);
     }
   }
+
+  rulerHInner.style.transform = `translateX(${-workspace.scrollLeft}px)`;
+  rulerVInner.style.transform = `translateY(${-workspace.scrollTop}px)`;
 }
 
 // ==================== 图片项管理 ====================
@@ -7527,9 +7548,16 @@ function initEvents() {
 
   $('#showRuler').addEventListener('change', (e) => {
     STATE.showRuler = e.target.checked;
-    for (const side of ['front', 'back']) {
-      renderRuler(side);
-    }
+    $('#rulerH').style.display = STATE.showRuler ? '' : 'none';
+    $('#rulerV').style.display = STATE.showRuler ? '' : 'none';
+    renderRuler();
+  });
+
+  $('#workspace').addEventListener('scroll', () => {
+    if (!STATE.showRuler) return;
+    const ws = $('#workspace');
+    $('#rulerHInner').style.transform = `translateX(${-ws.scrollLeft}px)`;
+    $('#rulerVInner').style.transform = `translateY(${-ws.scrollTop}px)`;
   });
 
   $$('.crop-btn').forEach(btn => {
