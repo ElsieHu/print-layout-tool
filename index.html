@@ -548,6 +548,24 @@
   .side-label.front { color: var(--accent); }
   .side-label.back { color: var(--success); }
 
+  .side-icon-btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 5px;
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    color: var(--text-muted);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: all 0.15s;
+  }
+  .side-icon-btn svg { width: 13px; height: 13px; }
+  .side-icon-btn:hover { background: var(--surface-hover); border-color: var(--border-active); color: var(--text); }
+  .side-icon-btn.danger:hover { background: var(--danger); border-color: var(--danger); color: #fff; }
+
   .ruler-container {
     display: grid;
     grid-template-columns: 24px auto;
@@ -4996,12 +5014,20 @@
     </div>
     <div class="toolbar-spacer"></div>
     <div class="toolbar-group toolbar-group-noborder">
-      <button class="toolbar-btn" id="undoBtn" title="撤销 (Ctrl+Z)">撤销</button>
-      <button class="toolbar-btn" id="redoBtn" title="重做 (Ctrl+Shift+Z)" disabled="">重做</button>
+      <button class="toolbar-btn icon-btn" id="undoBtn" title="撤销 (Ctrl+Z)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>
+      </button>
+      <button class="toolbar-btn icon-btn" id="redoBtn" title="重做 (Ctrl+Shift+Z)" disabled="">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"/></svg>
+      </button>
     </div>
     <div class="toolbar-group toolbar-group-noborder">
-      <button class="toolbar-btn" id="printBtn">打印</button>
-      <button class="toolbar-btn primary" id="exportPdf">导出 PDF</button>
+      <button class="toolbar-btn icon-btn" id="printBtn" title="打印">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>
+      </button>
+      <button class="toolbar-btn icon-btn primary" id="exportPdf" title="导出 PDF">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      </button>
     </div>
     <div class="toolbar-group toolbar-group-noborder">
       <button class="toolbar-btn icon-btn" id="themeToggle" title="切换深色/浅色模式">
@@ -5094,7 +5120,15 @@
 <div class="main-area">
   <div class="workspace" id="workspace" style="gap: 52.5724px; justify-content: center;">
     <div class="side-panel">
-      <div class="side-label front">&nbsp;正面</div>
+      <div style="display:flex;align-items:center;gap:6px;width:100%;justify-content:center;">
+        <div class="side-label front">&nbsp;正面</div>
+        <button class="side-icon-btn" id="uploadBtnFront" title="上传正面图片">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        </button>
+        <button class="side-icon-btn danger" id="clearBtnFront" title="清空正面">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        </button>
+      </div>
       <div class="ruler-container">
         <div class="ruler-corner"></div>
         <div class="ruler-h" id="rulerHFront"><div class="ruler-tick major" style="left: 0px;"></div><div class="ruler-label" style="left: 0px;">0</div><div class="ruler-tick minor" style="left: 5.60269px;"></div><div class="ruler-tick minor" style="left: 11.2054px;"></div><div class="ruler-tick minor" style="left: 16.8081px;"></div><div class="ruler-tick minor" style="left: 22.4108px;"></div><div class="ruler-tick major" style="left: 28.0135px;"></div><div class="ruler-tick minor" style="left: 33.6162px;"></div><div class="ruler-tick minor" style="left: 39.2189px;"></div><div class="ruler-tick minor" style="left: 44.8215px;"></div><div class="ruler-tick minor" style="left: 50.4242px;"></div><div class="ruler-tick major" style="left: 56.0269px;"></div><div class="ruler-label" style="left: 56.0269px;">40</div><div class="ruler-tick minor" style="left: 61.6296px;"></div><div class="ruler-tick minor" style="left: 67.2323px;"></div><div class="ruler-tick minor" style="left: 72.835px;"></div><div class="ruler-tick minor" style="left: 78.4377px;"></div><div class="ruler-tick major" style="left: 84.0404px;"></div><div class="ruler-tick minor" style="left: 89.6431px;"></div><div class="ruler-tick minor" style="left: 95.2458px;"></div><div class="ruler-tick minor" style="left: 100.848px;"></div><div class="ruler-tick minor" style="left: 106.451px;"></div><div class="ruler-tick major" style="left: 112.054px;"></div><div class="ruler-label" style="left: 112.054px;">80</div><div class="ruler-tick minor" style="left: 117.657px;"></div><div class="ruler-tick minor" style="left: 123.259px;"></div><div class="ruler-tick minor" style="left: 128.862px;"></div><div class="ruler-tick minor" style="left: 134.465px;"></div><div class="ruler-tick major" style="left: 140.067px;"></div><div class="ruler-tick minor" style="left: 145.67px;"></div><div class="ruler-tick minor" style="left: 151.273px;"></div><div class="ruler-tick minor" style="left: 156.875px;"></div><div class="ruler-tick minor" style="left: 162.478px;"></div><div class="ruler-tick major" style="left: 168.081px;"></div><div class="ruler-label" style="left: 168.081px;">120</div><div class="ruler-tick minor" style="left: 173.684px;"></div><div class="ruler-tick minor" style="left: 179.286px;"></div><div class="ruler-tick minor" style="left: 184.889px;"></div><div class="ruler-tick minor" style="left: 190.492px;"></div><div class="ruler-tick major" style="left: 196.094px;"></div><div class="ruler-tick minor" style="left: 201.697px;"></div><div class="ruler-tick minor" style="left: 207.3px;"></div><div class="ruler-tick minor" style="left: 212.902px;"></div><div class="ruler-tick minor" style="left: 218.505px;"></div><div class="ruler-tick major" style="left: 224.108px;"></div><div class="ruler-label" style="left: 224.108px;">160</div><div class="ruler-tick minor" style="left: 229.71px;"></div><div class="ruler-tick minor" style="left: 235.313px;"></div><div class="ruler-tick minor" style="left: 240.916px;"></div><div class="ruler-tick minor" style="left: 246.519px;"></div><div class="ruler-tick major" style="left: 252.121px;"></div><div class="ruler-tick minor" style="left: 257.724px;"></div><div class="ruler-tick minor" style="left: 263.327px;"></div><div class="ruler-tick minor" style="left: 268.929px;"></div><div class="ruler-tick minor" style="left: 274.532px;"></div><div class="ruler-tick major" style="left: 280.135px;"></div><div class="ruler-label" style="left: 280.135px;">200</div><div class="ruler-tick minor" style="left: 285.737px;"></div><div class="ruler-tick minor" style="left: 291.34px;"></div></div>
@@ -5108,7 +5142,15 @@
     <div class="flip-indicator" id="flipIndicator" style="display:none;"><span>长边翻页</span></div>
 
     <div class="side-panel">
-      <div class="side-label back">背面</div>
+      <div style="display:flex;align-items:center;gap:6px;width:100%;justify-content:center;">
+        <div class="side-label back">背面</div>
+        <button class="side-icon-btn" id="uploadBtnBack" title="上传背面图片">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        </button>
+        <button class="side-icon-btn danger" id="clearBtnBack" title="清空背面">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        </button>
+      </div>
       <div class="ruler-container">
         <div class="ruler-corner"></div>
         <div class="ruler-h" id="rulerHBack"><div class="ruler-tick major" style="left: 0px;"></div><div class="ruler-label" style="left: 0px;">0</div><div class="ruler-tick minor" style="left: 5.60269px;"></div><div class="ruler-tick minor" style="left: 11.2054px;"></div><div class="ruler-tick minor" style="left: 16.8081px;"></div><div class="ruler-tick minor" style="left: 22.4108px;"></div><div class="ruler-tick major" style="left: 28.0135px;"></div><div class="ruler-tick minor" style="left: 33.6162px;"></div><div class="ruler-tick minor" style="left: 39.2189px;"></div><div class="ruler-tick minor" style="left: 44.8215px;"></div><div class="ruler-tick minor" style="left: 50.4242px;"></div><div class="ruler-tick major" style="left: 56.0269px;"></div><div class="ruler-label" style="left: 56.0269px;">40</div><div class="ruler-tick minor" style="left: 61.6296px;"></div><div class="ruler-tick minor" style="left: 67.2323px;"></div><div class="ruler-tick minor" style="left: 72.835px;"></div><div class="ruler-tick minor" style="left: 78.4377px;"></div><div class="ruler-tick major" style="left: 84.0404px;"></div><div class="ruler-tick minor" style="left: 89.6431px;"></div><div class="ruler-tick minor" style="left: 95.2458px;"></div><div class="ruler-tick minor" style="left: 100.848px;"></div><div class="ruler-tick minor" style="left: 106.451px;"></div><div class="ruler-tick major" style="left: 112.054px;"></div><div class="ruler-label" style="left: 112.054px;">80</div><div class="ruler-tick minor" style="left: 117.657px;"></div><div class="ruler-tick minor" style="left: 123.259px;"></div><div class="ruler-tick minor" style="left: 128.862px;"></div><div class="ruler-tick minor" style="left: 134.465px;"></div><div class="ruler-tick major" style="left: 140.067px;"></div><div class="ruler-tick minor" style="left: 145.67px;"></div><div class="ruler-tick minor" style="left: 151.273px;"></div><div class="ruler-tick minor" style="left: 156.875px;"></div><div class="ruler-tick minor" style="left: 162.478px;"></div><div class="ruler-tick major" style="left: 168.081px;"></div><div class="ruler-label" style="left: 168.081px;">120</div><div class="ruler-tick minor" style="left: 173.684px;"></div><div class="ruler-tick minor" style="left: 179.286px;"></div><div class="ruler-tick minor" style="left: 184.889px;"></div><div class="ruler-tick minor" style="left: 190.492px;"></div><div class="ruler-tick major" style="left: 196.094px;"></div><div class="ruler-tick minor" style="left: 201.697px;"></div><div class="ruler-tick minor" style="left: 207.3px;"></div><div class="ruler-tick minor" style="left: 212.902px;"></div><div class="ruler-tick minor" style="left: 218.505px;"></div><div class="ruler-tick major" style="left: 224.108px;"></div><div class="ruler-label" style="left: 224.108px;">160</div><div class="ruler-tick minor" style="left: 229.71px;"></div><div class="ruler-tick minor" style="left: 235.313px;"></div><div class="ruler-tick minor" style="left: 240.916px;"></div><div class="ruler-tick minor" style="left: 246.519px;"></div><div class="ruler-tick major" style="left: 252.121px;"></div><div class="ruler-tick minor" style="left: 257.724px;"></div><div class="ruler-tick minor" style="left: 263.327px;"></div><div class="ruler-tick minor" style="left: 268.929px;"></div><div class="ruler-tick minor" style="left: 274.532px;"></div><div class="ruler-tick major" style="left: 280.135px;"></div><div class="ruler-label" style="left: 280.135px;">200</div><div class="ruler-tick minor" style="left: 285.737px;"></div><div class="ruler-tick minor" style="left: 291.34px;"></div></div>
@@ -5146,19 +5188,7 @@
       </div>
     </div>
 
-    <div class="panel-section">
-      <div class="panel-title">上传图片</div>
-      <div class="upload-row">
-        <div class="upload-zone" id="uploadZoneFront">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"></path></svg>
-          <div>正面</div>
-        </div>
-        <div class="upload-zone" id="uploadZoneBack">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"></path></svg>
-          <div>背面</div>
-        </div>
-      </div>
-    </div>
+    
 
     <div class="panel-section" id="selectedPanel" style="display: block;">
       <div class="panel-title" id="selectedPanelTitle">选中图片</div>
@@ -5281,13 +5311,7 @@
       </div>
     </div>
 
-    <div class="panel-section">
-      <div class="panel-title">清空</div>
-      <div class="clear-row">
-        <button class="panel-btn" id="clearFront">正面</button>
-        <button class="panel-btn" id="clearBack">背面</button>
-      </div>
-    </div>
+    
 
     
   </div>
@@ -7580,7 +7604,7 @@ function initEvents() {
   $('#exportPdf').addEventListener('click', exportPDF);
   $('#printBtn').addEventListener('click', printPage);
 
-  $('#uploadZoneFront').addEventListener('click', () => {
+  $('#uploadBtnFront').addEventListener('click', () => {
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'image/*';
@@ -7589,7 +7613,7 @@ function initEvents() {
     input.click();
   });
 
-  $('#uploadZoneBack').addEventListener('click', () => {
+  $('#uploadBtnBack').addEventListener('click', () => {
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'image/*';
@@ -7675,7 +7699,7 @@ function initEvents() {
     showToast(`已删除 ${count} 张图片`, 'success');
   });
 
-  $('#clearFront').addEventListener('click', () => {
+  $('#clearBtnFront').addEventListener('click', () => {
     for (const side of ['front', 'back']) {
       const canvas = $(`#canvas${side === 'front' ? 'Front' : 'Back'}`);
       canvas.querySelectorAll('.image-item, .crop-marks, .guide-line').forEach(el => el.remove());
@@ -7688,7 +7712,7 @@ function initEvents() {
     saveHistory();
   });
 
-  $('#clearBack').addEventListener('click', () => {
+  $('#clearBtnBack').addEventListener('click', () => {
     STATE.items.back.forEach(i => {
       if (i.image) {
         i.image = null;
