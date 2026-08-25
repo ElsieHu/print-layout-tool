@@ -5020,10 +5020,14 @@
 <div class="toolbar">
   <div class="toolbar-row">
     <div class="toolbar-title-block">
-      <div class="toolbar-subtitle">打印排版工具</div>
-      <div class="toolbar-logo">沿虚线剪开</div>
+      <div class="toolbar-logo" style="font-size:20px;">沿虚线剪开</div>
     </div>
     <div class="toolbar-spacer"></div>
+    <div class="toolbar-group toolbar-group-noborder">
+      <button class="toolbar-btn icon-btn" id="themeToggle" title="切换深色/浅色模式">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
     <div class="toolbar-group toolbar-group-noborder">
       <button class="toolbar-btn icon-btn" id="undoBtn" title="撤销 (Ctrl+Z)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>
@@ -5040,16 +5044,11 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
       </button>
     </div>
-    <div class="toolbar-group toolbar-group-noborder">
-      <button class="toolbar-btn icon-btn" id="themeToggle" title="切换深色/浅色模式">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-      </button>
-    </div>
   </div>
 
   <div class="toolbar-row toolbar-row-secondary">
     <div class="toolbar-group">
-      <span class="toolbar-label">纸张:</span>
+      <span class="toolbar-label">纸张</span>
       <select id="paperSize">
         <option value="A4">A4</option>
         <option value="A3">A3</option>
@@ -5077,7 +5076,7 @@
     </div>
 
     <div class="toolbar-group">
-      <span class="toolbar-label">方向:</span>
+      <span class="toolbar-label">方向</span>
       <div class="orientation-group">
         <button class="orientation-btn active" data-orientation="portrait">纵向</button>
         <button class="orientation-btn" data-orientation="landscape">横向</button>
@@ -5085,7 +5084,7 @@
     </div>
 
     <div class="toolbar-group">
-      <span class="toolbar-label">翻页:</span>
+      <span class="toolbar-label">翻页</span>
       <div class="flip-mode-group">
         <button class="flip-mode-btn active" data-flip="long">长边</button>
         <button class="flip-mode-btn" data-flip="short">短边</button>
@@ -5093,7 +5092,7 @@
     </div>
 
     <div class="toolbar-group">
-      <span class="toolbar-label">边距:</span>
+      <span class="toolbar-label">边距</span>
       <div class="num-input-wrap">
         <input type="number" id="marginSize" value="3" min="0" max="50" step="1">
         <div class="num-spin-btns">
@@ -5105,23 +5104,20 @@
     </div>
 
     <div class="toolbar-group">
-      <label style="display:flex;align-items:center;gap:4px;cursor:pointer;font-size:13px;">
-        <input type="checkbox" id="showGrid" checked=""> 网格
-      </label>
+      <span class="toolbar-label">裁切线</span>
+      <div class="crop-group">
+        <button class="crop-btn active" data-crop="front" id="cropBtnFront" title="正面裁切线">正</button>
+        <button class="crop-btn active" data-crop="back" id="cropBtnBack" title="背面裁切线">反</button>
+      </div>
+    </div>
+
+    <div class="toolbar-group">
       <label style="display:flex;align-items:center;gap:4px;cursor:pointer;font-size:12px;">
         <input type="checkbox" id="showGrid" checked=""> 网格
       </label>
       <label style="display:flex;align-items:center;gap:4px;cursor:pointer;font-size:12px;">
         <input type="checkbox" id="snapEnabled" checked=""> 磁吸
       </label>
-    </div>
-
-    <div class="toolbar-group">
-      <span class="toolbar-label">裁切线:</span>
-      <div class="crop-group">
-        <button class="crop-btn active" data-crop="front" id="cropBtnFront" title="正面裁切线">正</button>
-        <button class="crop-btn active" data-crop="back" id="cropBtnBack" title="背面裁切线">反</button>
-      </div>
     </div>
   </div>
 </div>
@@ -5202,7 +5198,7 @@
     
 
     <div class="panel-section" id="selectedPanel" style="display: block;">
-      <div class="panel-title" id="selectedPanelTitle">选中图片</div>
+      <div class="panel-title" id="selectedPanelTitle">图片编辑</div>
       <div class="panel-row">
         <label>X (mm):</label>
         <div class="num-input-wrap">
@@ -5268,24 +5264,6 @@
       </div>
     </div>
 
-    <div class="panel-section" id="pageAlignPanel" style="display: block;">
-      <div class="panel-title">对齐到页面</div>
-      <div class="align-grid">
-        <button class="align-btn" id="pageAlignLeft" title="左对齐到页面">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="4" y1="3" x2="4" y2="21"></line><rect x="6" y="8" width="10" height="8"></rect></svg></button>
-        <button class="align-btn" id="pageAlignCenterH" title="水平居中到页面">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="3" x2="12" y2="21" stroke-dasharray="2,2"></line><rect x="7" y="8" width="10" height="8"></rect></svg></button>
-        <button class="align-btn" id="pageAlignRight" title="右对齐到页面">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="20" y1="3" x2="20" y2="21"></line><rect x="8" y="8" width="10" height="8"></rect></svg></button>
-        <button class="align-btn" id="pageAlignTop" title="顶对齐到页面">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="4" x2="21" y2="4"></line><rect x="8" y="6" width="8" height="10"></rect></svg></button>
-        <button class="align-btn" id="pageAlignCenterV" title="垂直居中到页面">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="12" x2="21" y2="12" stroke-dasharray="2,2"></line><rect x="8" y="7" width="8" height="10"></rect></svg></button>
-        <button class="align-btn" id="pageAlignBottom" title="底对齐到页面">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="20" x2="21" y2="20"></line><rect x="8" y="8" width="8" height="10"></rect></svg></button>
-      </div>
-    </div>
-
     <div class="panel-section" id="alignPanel" style="display:none;">
       <div class="panel-title">对齐分布 <span id="alignCount" style="color:var(--accent);font-weight:normal;"></span></div>
       <div class="align-grid">
@@ -5319,6 +5297,24 @@
             <rect x="9" y="13" width="6" height="3"></rect>
           </svg>
         </button>
+      </div>
+    </div>
+
+    <div class="panel-section" id="pageAlignPanel" style="display: block;">
+      <div class="panel-title">对齐到页面</div>
+      <div class="align-grid">
+        <button class="align-btn" id="pageAlignLeft" title="左对齐到页面">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="4" y1="3" x2="4" y2="21"></line><rect x="6" y="8" width="10" height="8"></rect></svg></button>
+        <button class="align-btn" id="pageAlignCenterH" title="水平居中到页面">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="3" x2="12" y2="21" stroke-dasharray="2,2"></line><rect x="7" y="8" width="10" height="8"></rect></svg></button>
+        <button class="align-btn" id="pageAlignRight" title="右对齐到页面">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="20" y1="3" x2="20" y2="21"></line><rect x="8" y="8" width="10" height="8"></rect></svg></button>
+        <button class="align-btn" id="pageAlignTop" title="顶对齐到页面">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="4" x2="21" y2="4"></line><rect x="8" y="6" width="8" height="10"></rect></svg></button>
+        <button class="align-btn" id="pageAlignCenterV" title="垂直居中到页面">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="12" x2="21" y2="12" stroke-dasharray="2,2"></line><rect x="8" y="7" width="8" height="10"></rect></svg></button>
+        <button class="align-btn" id="pageAlignBottom" title="底对齐到页面">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="20" x2="21" y2="20"></line><rect x="8" y="8" width="8" height="10"></rect></svg></button>
       </div>
     </div>
 
@@ -6772,9 +6768,9 @@ function updateSelectedPanel() {
   panel.style.display = 'block';
 
   if (STATE.selectedItems.length > 1) {
-    title.textContent = `选中图片 (${STATE.selectedItems.length})`;
+    title.textContent = `图片编辑 (${STATE.selectedItems.length})`;
   } else {
-    title.textContent = '选中图片';
+    title.textContent = '图片编辑';
   }
 
   const alignPanel = $('#alignPanel');
