@@ -591,16 +591,16 @@
   .side-icon-btn:hover { background: var(--surface-hover); border-color: var(--border-active); color: var(--text); }
   .side-icon-btn.danger:hover { background: var(--danger); border-color: var(--danger); color: #fff; }
 
-  .ruler-tick { position: absolute; bottom: 0; width: 1px; background: var(--text-muted); }
+  .ruler-tick { position: absolute; top: 0; width: 1px; background: var(--text-secondary); }
   .ruler-tick.major { height: 10px; }
-  .ruler-tick.minor { height: 4px; opacity: 0.45; }
+  .ruler-tick.minor { height: 4px; opacity: 0.5; }
 
-  .ruler-tick-v { position: absolute; right: 0; height: 1px; background: var(--text-muted); }
+  .ruler-tick-v { position: absolute; left: 0; height: 1px; background: var(--text-secondary); }
   .ruler-tick-v.major { width: 10px; }
-  .ruler-tick-v.minor { width: 4px; opacity: 0.45; }
+  .ruler-tick-v.minor { width: 4px; opacity: 0.5; }
 
   .ruler-label {
-    position: absolute; top: 2px;
+    position: absolute; bottom: 2px;
     font-size: 9px; color: var(--text-muted);
     transform: translateX(-50%);
     font-family: -apple-system, 'SF Mono', 'Cascadia Code', monospace;
@@ -608,11 +608,33 @@
   }
 
   .ruler-label-v {
-    position: absolute; left: 2px;
+    position: absolute; right: 2px;
     font-size: 9px; color: var(--text-muted);
     transform: translateY(-50%);
     font-family: -apple-system, 'SF Mono', 'Cascadia Code', monospace;
     pointer-events: none; white-space: nowrap;
+  }
+
+  /* 选中图片在标尺上的高亮条 */
+  .ruler-hl-h {
+    position: absolute;
+    top: 0; bottom: 0;
+    background: var(--accent);
+    opacity: 0.5;
+    border-left: 1px solid var(--accent);
+    border-right: 1px solid var(--accent);
+    pointer-events: none;
+    z-index: 5;
+  }
+  .ruler-hl-v {
+    position: absolute;
+    left: 0; right: 0;
+    background: var(--accent);
+    opacity: 0.5;
+    border-top: 1px solid var(--accent);
+    border-bottom: 1px solid var(--accent);
+    pointer-events: none;
+    z-index: 5;
   }
 
   .canvas {
@@ -5659,6 +5681,47 @@ function renderRuler() {
 
   rulerHInner.style.transform = `translateX(${-workspace.scrollLeft}px)`;
   rulerVInner.style.transform = `translateY(${-workspace.scrollTop}px)`;
+
+  renderRulerHighlight();
+}
+
+// 在标尺上渲染选中图片的高亮条（横向紫色竖条 + 竖向紫色横条）
+function renderRulerHighlight() {
+  const rulerHInner = $('#rulerHInner');
+  const rulerVInner = $('#rulerVInner');
+  if (!rulerHInner || !rulerVInner) return;
+
+  rulerHInner.querySelectorAll('.ruler-hl-h').forEach(el => el.remove());
+  rulerVInner.querySelectorAll('.ruler-hl-v').forEach(el => el.remove());
+
+  if (!STATE.showRuler || STATE.selectedItems.length === 0) return;
+
+  const workspace = $('#workspace');
+  const rulerHRect = $('#rulerH').getBoundingClientRect();
+  const rulerVRect = $('#rulerV').getBoundingClientRect();
+
+  for (const sel of STATE.selectedItems) {
+    const item = getImageItem(sel.side, sel.id);
+    if (!item) continue;
+    const canvas = $(`#canvas${sel.side === 'front' ? 'Front' : 'Back'}`);
+    if (!canvas) continue;
+    const cRect = canvas.getBoundingClientRect();
+
+    const offH = cRect.left - rulerHRect.left + workspace.scrollLeft;
+    const offV = cRect.top - rulerVRect.top + workspace.scrollTop;
+
+    const hlH = document.createElement('div');
+    hlH.className = 'ruler-hl-h';
+    hlH.style.left = (offH + mmToPx(item.x)) + 'px';
+    hlH.style.width = Math.max(2, mmToPx(item.w)) + 'px';
+    rulerHInner.appendChild(hlH);
+
+    const hlV = document.createElement('div');
+    hlV.className = 'ruler-hl-v';
+    hlV.style.top = (offV + mmToPx(item.y)) + 'px';
+    hlV.style.height = Math.max(2, mmToPx(item.h)) + 'px';
+    rulerVInner.appendChild(hlV);
+  }
 }
 
 // ==================== 图片项管理 ====================
@@ -5814,6 +5877,7 @@ function renderImageItem(item, side) {
   renderAllCropMarks(side);
   checkOverlaps();
   checkOutOfBounds();
+  renderRulerHighlight();
 
   if (STATE.selectedItems.length > 0 && !STATE._applyingPanel) {
     const last = STATE.selectedItems[STATE.selectedItems.length - 1];
@@ -5910,12 +5974,14 @@ function selectItem(side, id, additive = false) {
   }
   updateSelectionStyles();
   updateSelectedPanel();
+  renderRulerHighlight();
 }
 
 function deselectAll() {
   STATE.selectedItems = [];
   updateSelectionStyles();
   updateSelectedPanel();
+  renderRulerHighlight();
 }
 
 function updateSelectionStyles() {
