@@ -945,6 +945,49 @@
   .num-spin-btn.up { border-radius: 0 5px 0 0; border-bottom: none; }
   .num-spin-btn.down { border-radius: 0 0 5px 0; }
 
+  .panel-row-cols {
+    align-items: flex-end;
+    justify-content: center;
+    gap: 6px;
+  }
+  .panel-row-cols .panel-field { flex: 0 0 auto; width: 74px; min-width: 0; }
+  .panel-row .panel-field label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 11px;
+    line-height: 1;
+    color: var(--text-muted);
+  }
+  .panel-row-cols .num-input-wrap { width: 100%; }
+  .panel-row-cols .num-input-wrap input[type="number"] {
+    flex: 1 1 0;
+    width: auto;
+    min-width: 0;
+  }
+  .lock-btn {
+    flex: 0 0 auto;
+    width: 26px;
+    height: 26px;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+  }
+  .lock-btn svg { width: 15px; height: 15px; }
+  .lock-btn:hover { color: var(--text); border-color: var(--border-strong); }
+  .lock-btn[aria-pressed="true"] {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--surface-solid);
+  }
+
   .panel-row input[type="checkbox"] {
     accent-color: var(--accent);
     width: 14px;
@@ -1303,50 +1346,54 @@
 
     <div class="panel-section" id="selectedPanel" style="display: block;">
       <div class="panel-title" id="selectedPanelTitle">图片编辑</div>
-      <div class="panel-row">
-        <label>X (mm)</label>
-        <div class="num-input-wrap">
-          <input type="number" id="itemX" step="0.1">
-          <div class="num-spin-btns">
-            <button class="num-spin-btn up" data-for="itemX" data-dir="up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px;"><polyline points="18 15 12 9 6 15"></polyline></svg></button>
-            <button class="num-spin-btn down" data-for="itemX" data-dir="down"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px;"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+      <div class="panel-row panel-row-cols">
+        <div class="panel-field">
+          <label>X (mm)</label>
+          <div class="num-input-wrap">
+            <input type="number" id="itemX" step="0.1">
+            <div class="num-spin-btns">
+              <button class="num-spin-btn up" data-for="itemX" data-dir="up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px;"><polyline points="18 15 12 9 6 15"></polyline></svg></button>
+              <button class="num-spin-btn down" data-for="itemX" data-dir="down"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px;"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+            </div>
+          </div>
+        </div>
+        <div class="panel-field">
+          <label>Y (mm)</label>
+          <div class="num-input-wrap">
+            <input type="number" id="itemY" step="0.1">
+            <div class="num-spin-btns">
+              <button class="num-spin-btn up" data-for="itemY" data-dir="up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px;"><polyline points="18 15 12 9 6 15"></polyline></svg></button>
+              <button class="num-spin-btn down" data-for="itemY" data-dir="down"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px;"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+            </div>
           </div>
         </div>
       </div>
-      <div class="panel-row">
-        <label>Y (mm)</label>
-        <div class="num-input-wrap">
-          <input type="number" id="itemY" step="0.1">
-          <div class="num-spin-btns">
-            <button class="num-spin-btn up" data-for="itemY" data-dir="up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px;"><polyline points="18 15 12 9 6 15"></polyline></svg></button>
-            <button class="num-spin-btn down" data-for="itemY" data-dir="down"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px;"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+      <div class="panel-row panel-row-cols">
+        <div class="panel-field">
+          <label>W (mm)</label>
+          <div class="num-input-wrap">
+            <input type="number" id="itemW" step="0.1" min="5">
+            <div class="num-spin-btns">
+              <button class="num-spin-btn up" data-for="itemW" data-dir="up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px;"><polyline points="18 15 12 9 6 15"></polyline></svg></button>
+              <button class="num-spin-btn down" data-for="itemW" data-dir="down"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px;"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="lock-btn" id="lockRatioBtn" aria-pressed="true" title="锁定比例 (已锁定)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+        </button>
+        <div class="panel-field">
+          <label>H&nbsp;(mm)</label>
+          <div class="num-input-wrap">
+            <input type="number" id="itemH" step="0.1" min="5">
+            <div class="num-spin-btns">
+              <button class="num-spin-btn up" data-for="itemH" data-dir="up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px;"><polyline points="18 15 12 9 6 15"></polyline></svg></button>
+              <button class="num-spin-btn down" data-for="itemH" data-dir="down"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px;"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+            </div>
           </div>
         </div>
       </div>
-      <div class="panel-row">
-        <label>W (mm)</label>
-        <div class="num-input-wrap">
-          <input type="number" id="itemW" step="0.1" min="5">
-          <div class="num-spin-btns">
-            <button class="num-spin-btn up" data-for="itemW" data-dir="up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px;"><polyline points="18 15 12 9 6 15"></polyline></svg></button>
-            <button class="num-spin-btn down" data-for="itemW" data-dir="down"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px;"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-          </div>
-        </div>
-      </div>
-      <div class="panel-row">
-        <label>H&nbsp;(mm)</label>
-        <div class="num-input-wrap">
-          <input type="number" id="itemH" step="0.1" min="5">
-          <div class="num-spin-btns">
-            <button class="num-spin-btn up" data-for="itemH" data-dir="up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px;"><polyline points="18 15 12 9 6 15"></polyline></svg></button>
-            <button class="num-spin-btn down" data-for="itemH" data-dir="down"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px;"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-          </div>
-        </div>
-      </div>
-      <div class="panel-row">
-        <label>锁定比例</label>
-        <input type="checkbox" id="lockRatio" checked="">
-      </div>
+      <input type="checkbox" id="lockRatio" checked="" style="display:none;">
       <div class="panel-row" id="uniformSizeRow">
         <label>统一尺寸</label>
         <input type="checkbox" id="uniformSize">
@@ -3822,6 +3869,24 @@ function initEvents() {
   ['itemX', 'itemY', 'itemW', 'itemH'].forEach(id => {
     $('#' + id).addEventListener('change', applyPanelValues);
   });
+
+  function renderLockBtn() {
+    const btn = $('#lockRatioBtn');
+    if (!btn) return;
+    const locked = $('#lockRatio').checked;
+    btn.setAttribute('aria-pressed', locked ? 'true' : 'false');
+    btn.title = locked ? '锁定比例 (已锁定)' : '锁定比例 (未锁定)';
+    btn.innerHTML = locked
+      ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>'
+      : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18.84 12.25 1.72-1.71h-.02a5.004 5.004 0 0 0-.12-7.07 5.006 5.006 0 0 0-6.95 0l-1.72 1.71"></path><path d="m5.17 11.75-1.71 1.71a5.004 5.004 0 0 0 .12 7.07 5.006 5.006 0 0 0 6.95 0l1.71-1.71"></path><line x1="8" x2="8" y1="2" y2="5"></line><line x1="2" x2="5" y1="8" y2="8"></line><line x1="16" x2="16" y1="19" y2="22"></line><line x1="19" x2="22" y1="16" y2="16"></line></svg>';
+  }
+
+  $('#lockRatioBtn').addEventListener('click', () => {
+    $('#lockRatio').checked = !$('#lockRatio').checked;
+    renderLockBtn();
+  });
+
+  renderLockBtn();
 
   $('#itemBleed').addEventListener('change', (e) => {
     if (STATE.selectedItems.length === 0) return;
