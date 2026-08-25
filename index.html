@@ -950,6 +950,7 @@
     justify-content: center;
     gap: 6px;
   }
+  .panel-row-cols.xy-cols { justify-content: space-between; }
   .panel-row-cols .panel-field { flex: 0 0 auto; width: 74px; min-width: 0; }
   .panel-row .panel-field label {
     display: block;
@@ -1346,7 +1347,7 @@
 
     <div class="panel-section" id="selectedPanel" style="display: block;">
       <div class="panel-title" id="selectedPanelTitle">图片编辑</div>
-      <div class="panel-row panel-row-cols">
+      <div class="panel-row panel-row-cols xy-cols">
         <div class="panel-field">
           <label>X (mm)</label>
           <div class="num-input-wrap">
