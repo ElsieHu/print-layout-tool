@@ -105,7 +105,7 @@
   /* ── Toolbar ── */
   .toolbar {
     background: var(--bg-secondary);
-    border-bottom: 1px solid var(--border);
+    /* border removed */
     padding: 0 20px;
     display: flex;
     flex-direction: column;
@@ -125,7 +125,7 @@
 
   .toolbar-row-secondary {
     height: 44px;
-    border-top: 1px solid var(--border);
+    /* border removed */
     gap: 10px;
   }
 
@@ -428,7 +428,7 @@
     gap: 4px;
     padding: 6px 20px;
     background: var(--bg-secondary);
-    border-bottom: 1px solid var(--border);
+    /* border removed */
     overflow-x: auto;
     flex-shrink: 0;
   }
@@ -821,6 +821,17 @@
     padding: 12px;
     border: 1px solid var(--border);
   }
+  .panel-section.disabled {
+    opacity: 0.45;
+    pointer-events: none;
+  }
+  .panel-section.disabled .panel-btn,
+  .panel-section.disabled .align-btn,
+  .panel-section.disabled .zoom-btn {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
 
   .panel-title {
     font-size: 11px;
@@ -1027,7 +1038,7 @@
     color: var(--text-muted);
     display: flex;
     gap: 18px;
-    border-top: 1px solid var(--border);
+    /* border removed */
     flex-wrap: wrap;
     flex-shrink: 0;
   }
@@ -5023,20 +5034,16 @@
       <div class="toolbar-logo" style="font-size:20px;">沿虚线剪开</div>
     </div>
     <div class="toolbar-spacer"></div>
-    <div class="toolbar-group toolbar-group-noborder">
+    <div class="toolbar-group toolbar-group-noborder" style="gap:6px;">
       <button class="toolbar-btn icon-btn" id="themeToggle" title="切换深色/浅色模式">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       </button>
-    </div>
-    <div class="toolbar-group toolbar-group-noborder">
       <button class="toolbar-btn icon-btn" id="undoBtn" title="撤销 (Ctrl+Z)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>
       </button>
       <button class="toolbar-btn icon-btn" id="redoBtn" title="重做 (Ctrl+Shift+Z)" disabled="">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"/></svg>
       </button>
-    </div>
-    <div class="toolbar-group toolbar-group-noborder">
       <button class="toolbar-btn icon-btn" id="printBtn" title="打印">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>
       </button>
@@ -5115,9 +5122,15 @@
       <label style="display:flex;align-items:center;gap:4px;cursor:pointer;font-size:12px;">
         <input type="checkbox" id="showGrid" checked=""> 网格
       </label>
-      <label style="display:flex;align-items:center;gap:4px;cursor:pointer;font-size:12px;">
-        <input type="checkbox" id="snapEnabled" checked=""> 磁吸
-      </label>
+      <span class="toolbar-label">磁吸</span>
+      <div class="num-input-wrap">
+        <input type="number" id="snapThreshold" value="5" min="0" max="50" step="1">
+        <div class="num-spin-btns">
+          <button class="num-spin-btn up" data-for="snapThreshold" data-dir="up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px;"><polyline points="18 15 12 9 6 15"/></svg></button>
+          <button class="num-spin-btn down" data-for="snapThreshold" data-dir="down"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px;"><polyline points="6 9 12 15 18 9"/></svg></button>
+        </div>
+      </div>
+      <span class="toolbar-label">mm</span>
     </div>
   </div>
 </div>
@@ -5350,7 +5363,6 @@ const STATE = {
   flipMode: 'long',
   margin: 3,
   snapThreshold: 5,
-  snapEnabled: true,
   showGrid: true,
   showCropMarksFront: true,
   showCropMarksBack: true,
@@ -6761,11 +6773,9 @@ function replaceImage() {
 function updateSelectedPanel() {
   const panel = $('#selectedPanel');
   const title = $('#selectedPanelTitle');
-  if (STATE.selectedItems.length === 0) { panel.style.display = 'none'; return; }
-  const sel = STATE.selectedItems[STATE.selectedItems.length - 1];
-  const item = getImageItem(sel.side, sel.id);
-  if (!item) { panel.style.display = 'none'; return; }
-  panel.style.display = 'block';
+  const hasSelection = STATE.selectedItems.length > 0;
+  const sel = hasSelection ? STATE.selectedItems[STATE.selectedItems.length - 1] : null;
+  const item = sel ? getImageItem(sel.side, sel.id) : null;
 
   if (STATE.selectedItems.length > 1) {
     title.textContent = `图片编辑 (${STATE.selectedItems.length})`;
@@ -6773,18 +6783,18 @@ function updateSelectedPanel() {
     title.textContent = '图片编辑';
   }
 
+  // Always show panels, disable when no selection
+  panel.classList.toggle('disabled', !hasSelection);
+
   const alignPanel = $('#alignPanel');
   const alignCount = $('#alignCount');
-  if (STATE.selectedItems.length >= 2) {
-    alignPanel.style.display = 'block';
-    alignCount.textContent = `(${STATE.selectedItems.length}个)`;
-  } else {
-    alignPanel.style.display = 'none';
-  }
+  const canAlign = STATE.selectedItems.length >= 2;
+  alignPanel.classList.toggle('disabled', !canAlign);
+  alignCount.textContent = canAlign ? `(${STATE.selectedItems.length}个)` : '';
 
   const pageAlignPanel = $('#pageAlignPanel');
   if (pageAlignPanel) {
-    pageAlignPanel.style.display = STATE.selectedItems.length >= 1 ? 'block' : 'none';
+    pageAlignPanel.classList.toggle('disabled', !hasSelection);
   }
 
   const uniformSizeRow = $('#uniformSizeRow');
@@ -6792,15 +6802,17 @@ function updateSelectedPanel() {
     uniformSizeRow.style.display = STATE.selectedItems.length >= 2 ? 'flex' : 'none';
   }
 
-  $('#itemX').value = item.x.toFixed(1);
-  $('#itemY').value = item.y.toFixed(1);
-  $('#itemW').value = item.w.toFixed(1);
-  $('#itemH').value = item.h.toFixed(1);
-  $('#itemBleed').value = item.bleed || 0;
+  if (item) {
+    $('#itemX').value = item.x.toFixed(1);
+    $('#itemY').value = item.y.toFixed(1);
+    $('#itemW').value = item.w.toFixed(1);
+    $('#itemH').value = item.h.toFixed(1);
+    $('#itemBleed').value = item.bleed || 0;
+  }
 
   const replaceBtn = $('#replaceItem');
   if (replaceBtn) {
-    replaceBtn.style.display = item.image ? 'block' : 'none';
+    replaceBtn.style.display = item && item.image ? 'block' : 'none';
   }
 }
 
@@ -7508,9 +7520,8 @@ function initEvents() {
     updateCanvasSize();
   });
 
-  $('#snapEnabled').addEventListener('change', (e) => {
-    STATE.snapEnabled = e.target.checked;
-    if (STATE.snapEnabled && !STATE.snapThreshold) STATE.snapThreshold = 5;
+  $('#snapThreshold').addEventListener('change', (e) => {
+    STATE.snapThreshold = parseFloat(e.target.value) || 0;
   });
 
   $('#showGrid').addEventListener('change', (e) => {
