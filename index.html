@@ -542,6 +542,7 @@
     transition: all 0.15s;
   }
   .side-icon-btn svg { width: 13px; height: 13px; }
+  .side-icon-btn.back { color: var(--success); }
   .side-icon-btn:hover { background: var(--surface-hover); border-color: var(--border-active); color: var(--text); }
   .side-icon-btn.danger:hover { background: var(--danger); border-color: var(--danger); color: #fff; }
 
@@ -5155,10 +5156,10 @@
     <div class="side-panel">
       <div style="display:flex;align-items:center;gap:6px;width:100%;justify-content:center;">
         <div class="side-label back">背面</div>
-        <button class="side-icon-btn" id="uploadBtnBack" title="上传背面图片">
+        <button class="side-icon-btn back" id="uploadBtnBack" title="上传背面图片">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
         </button>
-        <button class="side-icon-btn danger" id="clearBtnBack" title="清空背面">
+        <button class="side-icon-btn danger back" id="clearBtnBack" title="清空背面">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
         </button>
       </div>
