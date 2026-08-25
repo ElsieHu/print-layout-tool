@@ -119,14 +119,16 @@
     display: flex;
     align-items: center;
     gap: 0;
-    height: 52px;
+    min-height: 52px;
     flex-wrap: wrap;
+    padding: 4px 0;
   }
 
   .toolbar-row-secondary {
-    height: 44px;
+    min-height: 44px;
     /* border removed */
     gap: 10px;
+    padding: 4px 0;
   }
 
   .toolbar-title-block {
@@ -166,7 +168,7 @@
     padding-left: 0;
   }
 
-  .toolbar-group.toolbar-group-noborder { padding: 0; }
+  .toolbar-group.toolbar-group-noborder { padding: 0 8px; }
 
   .toolbar-group {
     display: flex;
@@ -331,6 +333,13 @@
     align-items: center;
     gap: 5px;
   }
+
+  .orientation-btn {
+    padding: 0 8px;
+    width: 28px;
+    justify-content: center;
+  }
+  .orientation-btn svg { width: 14px; height: 14px; }
 
   .flip-mode-btn.active, .orientation-btn.active, .crop-btn.active {
     background: var(--accent);
@@ -1171,13 +1180,11 @@
       <img src="title.png" class="toolbar-logo-img" alt="沿虚线剪开">
     </div>
     <div class="toolbar-spacer"></div>
-    <div class="toolbar-group toolbar-group-noborder">
-      <button class="toolbar-btn icon-btn" id="themeToggle" title="切换深色/浅色模式">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-      </button>
+    <button class="toolbar-btn icon-btn" id="themeToggle" title="切换深色/浅色模式" style=""><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button><div class="toolbar-group toolbar-group-noborder" style="">
+      
     </div>
     <div class="toolbar-group toolbar-group-noborder">
-      <button class="toolbar-btn icon-btn" id="undoBtn" title="撤销 (Ctrl+Z)">
+      <button class="toolbar-btn icon-btn" id="undoBtn" title="撤销 (Ctrl+Z)" disabled="">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"></path><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"></path></svg>
       </button>
       <button class="toolbar-btn icon-btn" id="redoBtn" title="重做 (Ctrl+Shift+Z)" disabled="">
@@ -1226,8 +1233,12 @@
     <div class="toolbar-group">
       <span class="toolbar-label">方向</span>
       <div class="orientation-group">
-        <button class="orientation-btn active" data-orientation="portrait">纵向</button>
-        <button class="orientation-btn" data-orientation="landscape">横向</button>
+        <button class="orientation-btn active" data-orientation="portrait" title="纵向">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="3" width="10" height="18" rx="2"></rect></svg>
+        </button>
+        <button class="orientation-btn" data-orientation="landscape" title="横向">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="10" rx="2"></rect></svg>
+        </button>
       </div>
     </div>
 
@@ -1279,14 +1290,14 @@
   </div>
 </div>
 
-<div class="page-tabs" id="pageTabs"></div>
+<div class="page-tabs" id="pageTabs"><div class="page-tab active"><span>页面 1</span></div><button class="page-tab-add" title="添加新页面">+</button></div>
 
 <div class="main-area">
   <div class="workspace-wrapper">
-    <div class="ruler-h" id="rulerH"><div class="ruler-h-inner" id="rulerHInner"></div></div>
+    <div class="ruler-h" id="rulerH"><div class="ruler-h-inner" id="rulerHInner" style="transform: translateX(0px);"><div class="ruler-tick major" style="left: 72.625px;"></div><div class="ruler-label" style="left: 72.625px;">0</div><div class="ruler-tick minor" style="left: 78.7512px;"></div><div class="ruler-tick minor" style="left: 84.8774px;"></div><div class="ruler-tick minor" style="left: 91.0036px;"></div><div class="ruler-tick minor" style="left: 97.1298px;"></div><div class="ruler-tick minor" style="left: 103.256px;"></div><div class="ruler-tick minor" style="left: 109.382px;"></div><div class="ruler-tick minor" style="left: 115.508px;"></div><div class="ruler-tick minor" style="left: 121.635px;"></div><div class="ruler-tick minor" style="left: 127.761px;"></div><div class="ruler-tick major" style="left: 133.887px;"></div><div class="ruler-label" style="left: 133.887px;">20</div><div class="ruler-tick minor" style="left: 140.013px;"></div><div class="ruler-tick minor" style="left: 146.139px;"></div><div class="ruler-tick minor" style="left: 152.265px;"></div><div class="ruler-tick minor" style="left: 158.392px;"></div><div class="ruler-tick minor" style="left: 164.518px;"></div><div class="ruler-tick minor" style="left: 170.644px;"></div><div class="ruler-tick minor" style="left: 176.77px;"></div><div class="ruler-tick minor" style="left: 182.896px;"></div><div class="ruler-tick minor" style="left: 189.023px;"></div><div class="ruler-tick major" style="left: 195.149px;"></div><div class="ruler-label" style="left: 195.149px;">40</div><div class="ruler-tick minor" style="left: 201.275px;"></div><div class="ruler-tick minor" style="left: 207.401px;"></div><div class="ruler-tick minor" style="left: 213.527px;"></div><div class="ruler-tick minor" style="left: 219.654px;"></div><div class="ruler-tick minor" style="left: 225.78px;"></div><div class="ruler-tick minor" style="left: 231.906px;"></div><div class="ruler-tick minor" style="left: 238.032px;"></div><div class="ruler-tick minor" style="left: 244.158px;"></div><div class="ruler-tick minor" style="left: 250.285px;"></div><div class="ruler-tick major" style="left: 256.411px;"></div><div class="ruler-label" style="left: 256.411px;">60</div><div class="ruler-tick minor" style="left: 262.537px;"></div><div class="ruler-tick minor" style="left: 268.663px;"></div><div class="ruler-tick minor" style="left: 274.789px;"></div><div class="ruler-tick minor" style="left: 280.915px;"></div><div class="ruler-tick minor" style="left: 287.042px;"></div><div class="ruler-tick minor" style="left: 293.168px;"></div><div class="ruler-tick minor" style="left: 299.294px;"></div><div class="ruler-tick minor" style="left: 305.42px;"></div><div class="ruler-tick minor" style="left: 311.546px;"></div><div class="ruler-tick major" style="left: 317.673px;"></div><div class="ruler-label" style="left: 317.673px;">80</div><div class="ruler-tick minor" style="left: 323.799px;"></div><div class="ruler-tick minor" style="left: 329.925px;"></div><div class="ruler-tick minor" style="left: 336.051px;"></div><div class="ruler-tick minor" style="left: 342.177px;"></div><div class="ruler-tick minor" style="left: 348.304px;"></div><div class="ruler-tick minor" style="left: 354.43px;"></div><div class="ruler-tick minor" style="left: 360.556px;"></div><div class="ruler-tick minor" style="left: 366.682px;"></div><div class="ruler-tick minor" style="left: 372.808px;"></div><div class="ruler-tick major" style="left: 378.935px;"></div><div class="ruler-label" style="left: 378.935px;">100</div><div class="ruler-tick minor" style="left: 385.061px;"></div><div class="ruler-tick minor" style="left: 391.187px;"></div><div class="ruler-tick minor" style="left: 397.313px;"></div><div class="ruler-tick minor" style="left: 403.439px;"></div><div class="ruler-tick minor" style="left: 409.565px;"></div><div class="ruler-tick minor" style="left: 415.692px;"></div><div class="ruler-tick minor" style="left: 421.818px;"></div><div class="ruler-tick minor" style="left: 427.944px;"></div><div class="ruler-tick minor" style="left: 434.07px;"></div><div class="ruler-tick major" style="left: 440.196px;"></div><div class="ruler-label" style="left: 440.196px;">120</div><div class="ruler-tick minor" style="left: 446.323px;"></div><div class="ruler-tick minor" style="left: 452.449px;"></div><div class="ruler-tick minor" style="left: 458.575px;"></div><div class="ruler-tick minor" style="left: 464.701px;"></div><div class="ruler-tick minor" style="left: 470.827px;"></div><div class="ruler-tick minor" style="left: 476.954px;"></div><div class="ruler-tick minor" style="left: 483.08px;"></div><div class="ruler-tick minor" style="left: 489.206px;"></div><div class="ruler-tick minor" style="left: 495.332px;"></div><div class="ruler-tick major" style="left: 501.458px;"></div><div class="ruler-label" style="left: 501.458px;">140</div><div class="ruler-tick minor" style="left: 507.585px;"></div><div class="ruler-tick minor" style="left: 513.711px;"></div><div class="ruler-tick minor" style="left: 519.837px;"></div><div class="ruler-tick minor" style="left: 525.963px;"></div><div class="ruler-tick minor" style="left: 532.089px;"></div><div class="ruler-tick minor" style="left: 538.215px;"></div><div class="ruler-tick minor" style="left: 544.342px;"></div><div class="ruler-tick minor" style="left: 550.468px;"></div><div class="ruler-tick minor" style="left: 556.594px;"></div><div class="ruler-tick major" style="left: 562.72px;"></div><div class="ruler-label" style="left: 562.72px;">160</div><div class="ruler-tick minor" style="left: 568.846px;"></div><div class="ruler-tick minor" style="left: 574.973px;"></div><div class="ruler-tick minor" style="left: 581.099px;"></div><div class="ruler-tick minor" style="left: 587.225px;"></div><div class="ruler-tick minor" style="left: 593.351px;"></div><div class="ruler-tick minor" style="left: 599.477px;"></div><div class="ruler-tick minor" style="left: 605.604px;"></div><div class="ruler-tick minor" style="left: 611.73px;"></div><div class="ruler-tick minor" style="left: 617.856px;"></div><div class="ruler-tick major" style="left: 623.982px;"></div><div class="ruler-label" style="left: 623.982px;">180</div><div class="ruler-tick minor" style="left: 630.108px;"></div><div class="ruler-tick minor" style="left: 636.235px;"></div><div class="ruler-tick minor" style="left: 642.361px;"></div><div class="ruler-tick minor" style="left: 648.487px;"></div><div class="ruler-tick minor" style="left: 654.613px;"></div><div class="ruler-tick minor" style="left: 660.739px;"></div><div class="ruler-tick minor" style="left: 666.865px;"></div><div class="ruler-tick minor" style="left: 672.992px;"></div><div class="ruler-tick minor" style="left: 679.118px;"></div><div class="ruler-tick major" style="left: 685.244px;"></div><div class="ruler-label" style="left: 685.244px;">200</div><div class="ruler-tick minor" style="left: 691.37px;"></div><div class="ruler-tick minor" style="left: 697.496px;"></div><div class="ruler-tick minor" style="left: 703.623px;"></div><div class="ruler-tick minor" style="left: 709.749px;"></div><div class="ruler-tick minor" style="left: 715.875px;"></div><div class="ruler-tick major" style="left: 789.125px;"></div><div class="ruler-label" style="left: 789.125px;">0</div><div class="ruler-tick minor" style="left: 795.251px;"></div><div class="ruler-tick minor" style="left: 801.377px;"></div><div class="ruler-tick minor" style="left: 807.504px;"></div><div class="ruler-tick minor" style="left: 813.63px;"></div><div class="ruler-tick minor" style="left: 819.756px;"></div><div class="ruler-tick minor" style="left: 825.882px;"></div><div class="ruler-tick minor" style="left: 832.008px;"></div><div class="ruler-tick minor" style="left: 838.135px;"></div><div class="ruler-tick minor" style="left: 844.261px;"></div><div class="ruler-tick major" style="left: 850.387px;"></div><div class="ruler-label" style="left: 850.387px;">20</div><div class="ruler-tick minor" style="left: 856.513px;"></div><div class="ruler-tick minor" style="left: 862.639px;"></div><div class="ruler-tick minor" style="left: 868.765px;"></div><div class="ruler-tick minor" style="left: 874.892px;"></div><div class="ruler-tick minor" style="left: 881.018px;"></div><div class="ruler-tick minor" style="left: 887.144px;"></div><div class="ruler-tick minor" style="left: 893.27px;"></div><div class="ruler-tick minor" style="left: 899.396px;"></div><div class="ruler-tick minor" style="left: 905.523px;"></div><div class="ruler-tick major" style="left: 911.649px;"></div><div class="ruler-label" style="left: 911.649px;">40</div><div class="ruler-tick minor" style="left: 917.775px;"></div><div class="ruler-tick minor" style="left: 923.901px;"></div><div class="ruler-tick minor" style="left: 930.027px;"></div><div class="ruler-tick minor" style="left: 936.154px;"></div><div class="ruler-tick minor" style="left: 942.28px;"></div><div class="ruler-tick minor" style="left: 948.406px;"></div><div class="ruler-tick minor" style="left: 954.532px;"></div><div class="ruler-tick minor" style="left: 960.658px;"></div><div class="ruler-tick minor" style="left: 966.785px;"></div><div class="ruler-tick major" style="left: 972.911px;"></div><div class="ruler-label" style="left: 972.911px;">60</div><div class="ruler-tick minor" style="left: 979.037px;"></div><div class="ruler-tick minor" style="left: 985.163px;"></div><div class="ruler-tick minor" style="left: 991.289px;"></div><div class="ruler-tick minor" style="left: 997.415px;"></div><div class="ruler-tick minor" style="left: 1003.54px;"></div><div class="ruler-tick minor" style="left: 1009.67px;"></div><div class="ruler-tick minor" style="left: 1015.79px;"></div><div class="ruler-tick minor" style="left: 1021.92px;"></div><div class="ruler-tick minor" style="left: 1028.05px;"></div><div class="ruler-tick major" style="left: 1034.17px;"></div><div class="ruler-label" style="left: 1034.17px;">80</div><div class="ruler-tick minor" style="left: 1040.3px;"></div><div class="ruler-tick minor" style="left: 1046.42px;"></div><div class="ruler-tick minor" style="left: 1052.55px;"></div><div class="ruler-tick minor" style="left: 1058.68px;"></div><div class="ruler-tick minor" style="left: 1064.8px;"></div><div class="ruler-tick minor" style="left: 1070.93px;"></div><div class="ruler-tick minor" style="left: 1077.06px;"></div><div class="ruler-tick minor" style="left: 1083.18px;"></div><div class="ruler-tick minor" style="left: 1089.31px;"></div><div class="ruler-tick major" style="left: 1095.43px;"></div><div class="ruler-label" style="left: 1095.43px;">100</div><div class="ruler-tick minor" style="left: 1101.56px;"></div><div class="ruler-tick minor" style="left: 1107.69px;"></div><div class="ruler-tick minor" style="left: 1113.81px;"></div><div class="ruler-tick minor" style="left: 1119.94px;"></div><div class="ruler-tick minor" style="left: 1126.07px;"></div><div class="ruler-tick minor" style="left: 1132.19px;"></div><div class="ruler-tick minor" style="left: 1138.32px;"></div><div class="ruler-tick minor" style="left: 1144.44px;"></div><div class="ruler-tick minor" style="left: 1150.57px;"></div><div class="ruler-tick major" style="left: 1156.7px;"></div><div class="ruler-label" style="left: 1156.7px;">120</div><div class="ruler-tick minor" style="left: 1162.82px;"></div><div class="ruler-tick minor" style="left: 1168.95px;"></div><div class="ruler-tick minor" style="left: 1175.08px;"></div><div class="ruler-tick minor" style="left: 1181.2px;"></div><div class="ruler-tick minor" style="left: 1187.33px;"></div><div class="ruler-tick minor" style="left: 1193.45px;"></div><div class="ruler-tick minor" style="left: 1199.58px;"></div><div class="ruler-tick minor" style="left: 1205.71px;"></div><div class="ruler-tick minor" style="left: 1211.83px;"></div><div class="ruler-tick major" style="left: 1217.96px;"></div><div class="ruler-label" style="left: 1217.96px;">140</div><div class="ruler-tick minor" style="left: 1224.08px;"></div><div class="ruler-tick minor" style="left: 1230.21px;"></div><div class="ruler-tick minor" style="left: 1236.34px;"></div><div class="ruler-tick minor" style="left: 1242.46px;"></div><div class="ruler-tick minor" style="left: 1248.59px;"></div><div class="ruler-tick minor" style="left: 1254.72px;"></div><div class="ruler-tick minor" style="left: 1260.84px;"></div><div class="ruler-tick minor" style="left: 1266.97px;"></div><div class="ruler-tick minor" style="left: 1273.09px;"></div><div class="ruler-tick major" style="left: 1279.22px;"></div><div class="ruler-label" style="left: 1279.22px;">160</div><div class="ruler-tick minor" style="left: 1285.35px;"></div><div class="ruler-tick minor" style="left: 1291.47px;"></div><div class="ruler-tick minor" style="left: 1297.6px;"></div><div class="ruler-tick minor" style="left: 1303.72px;"></div><div class="ruler-tick minor" style="left: 1309.85px;"></div><div class="ruler-tick minor" style="left: 1315.98px;"></div><div class="ruler-tick minor" style="left: 1322.1px;"></div><div class="ruler-tick minor" style="left: 1328.23px;"></div><div class="ruler-tick minor" style="left: 1334.36px;"></div><div class="ruler-tick major" style="left: 1340.48px;"></div><div class="ruler-label" style="left: 1340.48px;">180</div><div class="ruler-tick minor" style="left: 1346.61px;"></div><div class="ruler-tick minor" style="left: 1352.73px;"></div><div class="ruler-tick minor" style="left: 1358.86px;"></div><div class="ruler-tick minor" style="left: 1364.99px;"></div><div class="ruler-tick minor" style="left: 1371.11px;"></div><div class="ruler-tick minor" style="left: 1377.24px;"></div><div class="ruler-tick minor" style="left: 1383.37px;"></div><div class="ruler-tick minor" style="left: 1389.49px;"></div><div class="ruler-tick minor" style="left: 1395.62px;"></div><div class="ruler-tick major" style="left: 1401.74px;"></div><div class="ruler-label" style="left: 1401.74px;">200</div><div class="ruler-tick minor" style="left: 1407.87px;"></div><div class="ruler-tick minor" style="left: 1414px;"></div><div class="ruler-tick minor" style="left: 1420.12px;"></div><div class="ruler-tick minor" style="left: 1426.25px;"></div><div class="ruler-tick minor" style="left: 1432.38px;"></div></div></div>
     <div class="workspace-content">
-      <div class="ruler-v" id="rulerV"><div class="ruler-v-inner" id="rulerVInner"></div></div>
-      <div class="workspace" id="workspace">
+      <div class="ruler-v" id="rulerV"><div class="ruler-v-inner" id="rulerVInner" style="transform: translateY(0px);"><div class="ruler-tick-v major" style="top: 54px;"></div><div class="ruler-label-v" style="top: 54px;">0</div><div class="ruler-tick-v minor" style="top: 60.1262px;"></div><div class="ruler-tick-v minor" style="top: 66.2524px;"></div><div class="ruler-tick-v minor" style="top: 72.3786px;"></div><div class="ruler-tick-v minor" style="top: 78.5048px;"></div><div class="ruler-tick-v minor" style="top: 84.631px;"></div><div class="ruler-tick-v minor" style="top: 90.7571px;"></div><div class="ruler-tick-v minor" style="top: 96.8833px;"></div><div class="ruler-tick-v minor" style="top: 103.01px;"></div><div class="ruler-tick-v minor" style="top: 109.136px;"></div><div class="ruler-tick-v major" style="top: 115.262px;"></div><div class="ruler-label-v" style="top: 115.262px;">20</div><div class="ruler-tick-v minor" style="top: 121.388px;"></div><div class="ruler-tick-v minor" style="top: 127.514px;"></div><div class="ruler-tick-v minor" style="top: 133.64px;"></div><div class="ruler-tick-v minor" style="top: 139.767px;"></div><div class="ruler-tick-v minor" style="top: 145.893px;"></div><div class="ruler-tick-v minor" style="top: 152.019px;"></div><div class="ruler-tick-v minor" style="top: 158.145px;"></div><div class="ruler-tick-v minor" style="top: 164.271px;"></div><div class="ruler-tick-v minor" style="top: 170.398px;"></div><div class="ruler-tick-v major" style="top: 176.524px;"></div><div class="ruler-label-v" style="top: 176.524px;">40</div><div class="ruler-tick-v minor" style="top: 182.65px;"></div><div class="ruler-tick-v minor" style="top: 188.776px;"></div><div class="ruler-tick-v minor" style="top: 194.902px;"></div><div class="ruler-tick-v minor" style="top: 201.029px;"></div><div class="ruler-tick-v minor" style="top: 207.155px;"></div><div class="ruler-tick-v minor" style="top: 213.281px;"></div><div class="ruler-tick-v minor" style="top: 219.407px;"></div><div class="ruler-tick-v minor" style="top: 225.533px;"></div><div class="ruler-tick-v minor" style="top: 231.66px;"></div><div class="ruler-tick-v major" style="top: 237.786px;"></div><div class="ruler-label-v" style="top: 237.786px;">60</div><div class="ruler-tick-v minor" style="top: 243.912px;"></div><div class="ruler-tick-v minor" style="top: 250.038px;"></div><div class="ruler-tick-v minor" style="top: 256.164px;"></div><div class="ruler-tick-v minor" style="top: 262.29px;"></div><div class="ruler-tick-v minor" style="top: 268.417px;"></div><div class="ruler-tick-v minor" style="top: 274.543px;"></div><div class="ruler-tick-v minor" style="top: 280.669px;"></div><div class="ruler-tick-v minor" style="top: 286.795px;"></div><div class="ruler-tick-v minor" style="top: 292.921px;"></div><div class="ruler-tick-v major" style="top: 299.048px;"></div><div class="ruler-label-v" style="top: 299.048px;">80</div><div class="ruler-tick-v minor" style="top: 305.174px;"></div><div class="ruler-tick-v minor" style="top: 311.3px;"></div><div class="ruler-tick-v minor" style="top: 317.426px;"></div><div class="ruler-tick-v minor" style="top: 323.552px;"></div><div class="ruler-tick-v minor" style="top: 329.679px;"></div><div class="ruler-tick-v minor" style="top: 335.805px;"></div><div class="ruler-tick-v minor" style="top: 341.931px;"></div><div class="ruler-tick-v minor" style="top: 348.057px;"></div><div class="ruler-tick-v minor" style="top: 354.183px;"></div><div class="ruler-tick-v major" style="top: 360.31px;"></div><div class="ruler-label-v" style="top: 360.31px;">100</div><div class="ruler-tick-v minor" style="top: 366.436px;"></div><div class="ruler-tick-v minor" style="top: 372.562px;"></div><div class="ruler-tick-v minor" style="top: 378.688px;"></div><div class="ruler-tick-v minor" style="top: 384.814px;"></div><div class="ruler-tick-v minor" style="top: 390.94px;"></div><div class="ruler-tick-v minor" style="top: 397.067px;"></div><div class="ruler-tick-v minor" style="top: 403.193px;"></div><div class="ruler-tick-v minor" style="top: 409.319px;"></div><div class="ruler-tick-v minor" style="top: 415.445px;"></div><div class="ruler-tick-v major" style="top: 421.571px;"></div><div class="ruler-label-v" style="top: 421.571px;">120</div><div class="ruler-tick-v minor" style="top: 427.698px;"></div><div class="ruler-tick-v minor" style="top: 433.824px;"></div><div class="ruler-tick-v minor" style="top: 439.95px;"></div><div class="ruler-tick-v minor" style="top: 446.076px;"></div><div class="ruler-tick-v minor" style="top: 452.202px;"></div><div class="ruler-tick-v minor" style="top: 458.329px;"></div><div class="ruler-tick-v minor" style="top: 464.455px;"></div><div class="ruler-tick-v minor" style="top: 470.581px;"></div><div class="ruler-tick-v minor" style="top: 476.707px;"></div><div class="ruler-tick-v major" style="top: 482.833px;"></div><div class="ruler-label-v" style="top: 482.833px;">140</div><div class="ruler-tick-v minor" style="top: 488.96px;"></div><div class="ruler-tick-v minor" style="top: 495.086px;"></div><div class="ruler-tick-v minor" style="top: 501.212px;"></div><div class="ruler-tick-v minor" style="top: 507.338px;"></div><div class="ruler-tick-v minor" style="top: 513.464px;"></div><div class="ruler-tick-v minor" style="top: 519.59px;"></div><div class="ruler-tick-v minor" style="top: 525.717px;"></div><div class="ruler-tick-v minor" style="top: 531.843px;"></div><div class="ruler-tick-v minor" style="top: 537.969px;"></div><div class="ruler-tick-v major" style="top: 544.095px;"></div><div class="ruler-label-v" style="top: 544.095px;">160</div><div class="ruler-tick-v minor" style="top: 550.221px;"></div><div class="ruler-tick-v minor" style="top: 556.348px;"></div><div class="ruler-tick-v minor" style="top: 562.474px;"></div><div class="ruler-tick-v minor" style="top: 568.6px;"></div><div class="ruler-tick-v minor" style="top: 574.726px;"></div><div class="ruler-tick-v minor" style="top: 580.852px;"></div><div class="ruler-tick-v minor" style="top: 586.979px;"></div><div class="ruler-tick-v minor" style="top: 593.105px;"></div><div class="ruler-tick-v minor" style="top: 599.231px;"></div><div class="ruler-tick-v major" style="top: 605.357px;"></div><div class="ruler-label-v" style="top: 605.357px;">180</div><div class="ruler-tick-v minor" style="top: 611.483px;"></div><div class="ruler-tick-v minor" style="top: 617.61px;"></div><div class="ruler-tick-v minor" style="top: 623.736px;"></div><div class="ruler-tick-v minor" style="top: 629.862px;"></div><div class="ruler-tick-v minor" style="top: 635.988px;"></div><div class="ruler-tick-v minor" style="top: 642.114px;"></div><div class="ruler-tick-v minor" style="top: 648.24px;"></div><div class="ruler-tick-v minor" style="top: 654.367px;"></div><div class="ruler-tick-v minor" style="top: 660.493px;"></div><div class="ruler-tick-v major" style="top: 666.619px;"></div><div class="ruler-label-v" style="top: 666.619px;">200</div><div class="ruler-tick-v minor" style="top: 672.745px;"></div><div class="ruler-tick-v minor" style="top: 678.871px;"></div><div class="ruler-tick-v minor" style="top: 684.998px;"></div><div class="ruler-tick-v minor" style="top: 691.124px;"></div><div class="ruler-tick-v minor" style="top: 697.25px;"></div><div class="ruler-tick-v minor" style="top: 703.376px;"></div><div class="ruler-tick-v minor" style="top: 709.502px;"></div><div class="ruler-tick-v minor" style="top: 715.629px;"></div><div class="ruler-tick-v minor" style="top: 721.755px;"></div><div class="ruler-tick-v major" style="top: 727.881px;"></div><div class="ruler-label-v" style="top: 727.881px;">220</div><div class="ruler-tick-v minor" style="top: 734.007px;"></div><div class="ruler-tick-v minor" style="top: 740.133px;"></div><div class="ruler-tick-v minor" style="top: 746.26px;"></div><div class="ruler-tick-v minor" style="top: 752.386px;"></div><div class="ruler-tick-v minor" style="top: 758.512px;"></div><div class="ruler-tick-v minor" style="top: 764.638px;"></div><div class="ruler-tick-v minor" style="top: 770.764px;"></div><div class="ruler-tick-v minor" style="top: 776.89px;"></div><div class="ruler-tick-v minor" style="top: 783.017px;"></div><div class="ruler-tick-v major" style="top: 789.143px;"></div><div class="ruler-label-v" style="top: 789.143px;">240</div><div class="ruler-tick-v minor" style="top: 795.269px;"></div><div class="ruler-tick-v minor" style="top: 801.395px;"></div><div class="ruler-tick-v minor" style="top: 807.521px;"></div><div class="ruler-tick-v minor" style="top: 813.648px;"></div><div class="ruler-tick-v minor" style="top: 819.774px;"></div><div class="ruler-tick-v minor" style="top: 825.9px;"></div><div class="ruler-tick-v minor" style="top: 832.026px;"></div><div class="ruler-tick-v minor" style="top: 838.152px;"></div><div class="ruler-tick-v minor" style="top: 844.279px;"></div><div class="ruler-tick-v major" style="top: 850.405px;"></div><div class="ruler-label-v" style="top: 850.405px;">260</div><div class="ruler-tick-v minor" style="top: 856.531px;"></div><div class="ruler-tick-v minor" style="top: 862.657px;"></div><div class="ruler-tick-v minor" style="top: 868.783px;"></div><div class="ruler-tick-v minor" style="top: 874.91px;"></div><div class="ruler-tick-v minor" style="top: 881.036px;"></div><div class="ruler-tick-v minor" style="top: 887.162px;"></div><div class="ruler-tick-v minor" style="top: 893.288px;"></div><div class="ruler-tick-v minor" style="top: 899.414px;"></div><div class="ruler-tick-v minor" style="top: 905.54px;"></div><div class="ruler-tick-v major" style="top: 911.667px;"></div><div class="ruler-label-v" style="top: 911.667px;">280</div><div class="ruler-tick-v minor" style="top: 917.793px;"></div><div class="ruler-tick-v minor" style="top: 923.919px;"></div><div class="ruler-tick-v minor" style="top: 930.045px;"></div><div class="ruler-tick-v minor" style="top: 936.171px;"></div><div class="ruler-tick-v minor" style="top: 942.298px;"></div><div class="ruler-tick-v minor" style="top: 948.424px;"></div><div class="ruler-tick-v minor" style="top: 954.55px;"></div><div class="ruler-tick-v minor" style="top: 960.676px;"></div></div></div>
+      <div class="workspace" id="workspace" style="gap: 73.25px; justify-content: center;">
     <div class="side-panel">
       <div style="display:flex;align-items:center;gap:6px;width:100%;justify-content:center;">
         <div class="side-label front">&nbsp;正面</div>
@@ -1297,7 +1308,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
         </button>
       </div>
-        <div class="canvas" id="canvasFront" data-side="front"></div>
+        <div class="canvas" id="canvasFront" data-side="front" style="width: 643.25px; height: 909.739px; background-image: linear-gradient(rgba(0, 0, 0, 0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.035) 1px, transparent 1px), linear-gradient(rgba(0, 0, 0, 0.016) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.016) 1px, transparent 1px); background-size: 61.2619px 61.2619px, 61.2619px 61.2619px, 6.12619px 6.12619px, 6.12619px 6.12619px;"><div class="margin-line" style="left: 9.18929px; top: 9.18929px; width: 624.871px; height: 891.361px;"></div></div>
     </div>
 
     <div class="flip-indicator" id="flipIndicator" style="display:none;"></div>
@@ -1312,7 +1323,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
         </button>
       </div>
-        <div class="canvas" id="canvasBack" data-side="back"></div>
+        <div class="canvas" id="canvasBack" data-side="back" style="width: 643.25px; height: 909.739px; background-image: linear-gradient(rgba(0, 0, 0, 0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.035) 1px, transparent 1px), linear-gradient(rgba(0, 0, 0, 0.016) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.016) 1px, transparent 1px); background-size: 61.2619px 61.2619px, 61.2619px 61.2619px, 6.12619px 6.12619px, 6.12619px 6.12619px;"><div class="margin-line" style="left: 9.18929px; top: 9.18929px; width: 624.871px; height: 891.361px;"></div></div>
     </div>
       </div>
     </div>
@@ -1323,14 +1334,14 @@
       <div class="zoom-btn-group">
         <div class="zoom-info-row">
           <div class="panel-title">缩放</div>
-          <span class="zoom-display" id="zoomDisplay">37%</span>
+          <span class="zoom-display" id="zoomDisplay">81%</span>
         </div>
         <div class="zoom-btn-row">
           <button class="zoom-btn active" data-zoom="fit" title="适应窗口">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H4a1 1 0 0 0-1 1v4"></path><path d="M16 3h4a1 1 0 0 1 1 1v4"></path><path d="M3 16v4a1 1 0 0 0 1 1h4"></path><path d="M21 16v4a1 1 0 0 1-1 1h-4"></path></svg>
           </button>
           <button class="zoom-btn" data-zoom="1" title="实际大小 (100%)" style="font-size:10px;font-weight:700;">1:1</button>
-          <button class="zoom-btn" id="zoomOut" title="缩小" disabled="">
+          <button class="zoom-btn" id="zoomOut" title="缩小">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
           </button>
           <button class="zoom-btn" id="zoomIn" title="放大">
@@ -1342,7 +1353,7 @@
 
     
 
-    <div class="panel-section" id="selectedPanel" style="display: block;">
+    <div class="panel-section disabled" id="selectedPanel" style="display: block;">
       <div class="panel-title" id="selectedPanelTitle">图片编辑</div>
       <div class="panel-row panel-row-cols xy-cols">
         <div class="panel-field">
@@ -1377,9 +1388,7 @@
             </div>
           </div>
         </div>
-        <button type="button" class="lock-btn" id="lockRatioBtn" aria-pressed="true" title="锁定比例 (已锁定)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-        </button>
+        <button type="button" class="lock-btn" id="lockRatioBtn" aria-pressed="true" title="锁定比例 (已锁定)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></button>
         <div class="panel-field">
           <label>H&nbsp;(mm)</label>
           <div class="num-input-wrap">
@@ -1392,7 +1401,7 @@
         </div>
       </div>
       <input type="checkbox" id="lockRatio" checked="" style="display:none;">
-      <div class="panel-row" id="uniformSizeRow">
+      <div class="panel-row disabled" id="uniformSizeRow">
         <label>统一尺寸</label>
         <input type="checkbox" id="uniformSize">
       </div>
@@ -1408,12 +1417,12 @@
       </div>
 
       <div class="panel-row-btns">
-        <button class="panel-btn" id="replaceItem">替换</button>
+        <button class="panel-btn" id="replaceItem" style="display: block;">替换</button>
         <button class="panel-btn danger" id="deleteItem">删除</button>
       </div>
     </div>
 
-    <div class="panel-section" id="alignPanel" style="display: block;">
+    <div class="panel-section disabled" id="alignPanel" style="display: block;">
       <div class="panel-title">对齐分布 <span id="alignCount" style="color:var(--accent);font-weight:normal;"></span></div>
       <div class="align-grid">
         <button class="align-btn" id="alignLeft" title="左对齐">
@@ -1449,7 +1458,7 @@
       </div>
     </div>
 
-    <div class="panel-section" id="pageAlignPanel" style="display: block;">
+    <div class="panel-section disabled" id="pageAlignPanel" style="display: block;">
       <div class="panel-title">对齐到页面</div>
       <div class="align-grid">
         <button class="align-btn" id="pageAlignLeft" title="左对齐到页面">
@@ -1475,7 +1484,7 @@
 
 
 
-<div class="toast success" id="toast">图片已添加</div>
+<div class="toast success" id="toast">欢迎使用打印排版工具！上传图片开始使用</div>
 <div class="size-tooltip" id="sizeTooltip"></div>
 
 <script>
