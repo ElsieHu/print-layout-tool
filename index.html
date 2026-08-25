@@ -592,12 +592,12 @@
   .side-icon-btn.danger:hover { background: var(--danger); border-color: var(--danger); color: #fff; }
 
   .ruler-tick { position: absolute; top: 0; width: 1px; background: var(--text-secondary); }
-  .ruler-tick.major { height: 10px; }
-  .ruler-tick.minor { height: 4px; opacity: 0.5; }
+  .ruler-tick.major { height: 6px; }
+  .ruler-tick.minor { height: 3px; opacity: 0.5; }
 
   .ruler-tick-v { position: absolute; left: 0; height: 1px; background: var(--text-secondary); }
-  .ruler-tick-v.major { width: 10px; }
-  .ruler-tick-v.minor { width: 4px; opacity: 0.5; }
+  .ruler-tick-v.major { width: 6px; }
+  .ruler-tick-v.minor { width: 3px; opacity: 0.5; }
 
   .ruler-label {
     position: absolute; bottom: 2px;
@@ -605,6 +605,7 @@
     transform: translateX(-50%);
     font-family: -apple-system, 'SF Mono', 'Cascadia Code', monospace;
     pointer-events: none; white-space: nowrap;
+    z-index: 1;
   }
 
   .ruler-label-v {
@@ -613,6 +614,7 @@
     transform: translateY(-50%);
     font-family: -apple-system, 'SF Mono', 'Cascadia Code', monospace;
     pointer-events: none; white-space: nowrap;
+    z-index: 1;
   }
 
   /* 选中图片在标尺上的高亮条 */
@@ -5575,10 +5577,10 @@ function updateCanvasSize() {
 function getGridConfig() {
   const threshold = 3;
   const configs = [
-    { major: 5, minor: 1, labelInterval: 10 },
-    { major: 10, minor: 2, labelInterval: 20 },
-    { major: 20, minor: 4, labelInterval: 40 },
-    { major: 50, minor: 10, labelInterval: 50 },
+    { major: 20, minor: 1, labelInterval: 20 },
+    { major: 20, minor: 2, labelInterval: 20 },
+    { major: 20, minor: 4, labelInterval: 20 },
+    { major: 20, minor: 10, labelInterval: 20 },
   ];
   for (const config of configs) {
     if (mmToPx(config.minor) >= threshold) {
@@ -5793,6 +5795,7 @@ function deleteImageItem(side, id) {
   renderAllCropMarks('back');
   checkOverlaps();
   checkOutOfBounds();
+  renderRulerHighlight();
 }
 
 function deleteSelectedItems() {
@@ -6237,6 +6240,7 @@ function startMarquee(e, side) {
 
     updateSelectionStyles();
     updateSelectedPanel();
+    renderRulerHighlight();
   };
 
   const onUp = () => {
@@ -7538,6 +7542,7 @@ function duplicateSelectedItems() {
   updateSelectedPanel();
   renderAllCropMarks('front');
   renderAllCropMarks('back');
+  renderRulerHighlight();
   saveHistory();
   showToast(`已复制 ${clips.length} 张图片`, 'success');
 }
